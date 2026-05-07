@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Orden de Compra – BalanzasCaballito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --black:#0a0a0a;--dark:#111214;--panel:#161819;--panel2:#1c1e20;
+      --border:#2a2d30;--accent:#f5a800;--accent2:#ff6b1a;
+      --green:#22c55e;--white:#f0ede8;--muted:#8a8f96;
+      --fd:'Bebas Neue',sans-serif;--fb:'DM Sans',sans-serif;--fm:'Share Tech Mono',monospace;
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--black);color:var(--white);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
+
+    /* grid bg — pointer-events:none para que no bloquee clicks */
+    .bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:linear-gradient(rgba(245,168,0,.025) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(245,168,0,.025) 1px,transparent 1px);
+      background-size:48px 48px}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;
+      justify-content:space-between;padding:1rem 2rem;
+      background:rgba(10,10,10,.96);  -webkit-backdrop-filter: blur(12px); backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .logo{font-family:var(--fd);font-size:1.3rem;letter-spacing:3px;color:var(--white);text-decoration:none}
+    .logo span{color:var(--accent)}
+    .back{font-family:var(--fm);font-size:.72rem;color:var(--muted);letter-spacing:2px;text-decoration:none;transition:color .2s}
+    .back:hover{color:var(--accent)}
+
+    /* WRAP */
+    .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:110px 1.5rem 5rem}
+
+    /* HEADER */
+    .ph{text-align:center;margin-bottom:2.5rem}
+    .ph-tag{font-family:var(--fm);font-size:.68rem;letter-spacing:3px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:.6rem}
+    .ph-title{font-family:var(--fd);font-size:clamp(3rem,9vw,5.5rem);line-height:.9}
+    .ph-title span{color:var(--accent)}
+    .ph-sub{color:var(--muted);font-size:.88rem;margin-top:.9rem;line-height:1.65;max-width:460px;margin-left:auto;margin-right:auto}
+
+    /* ORDER BADGE */
+    .ob{display:flex;align-items:stretch;border:1px solid var(--border);background:var(--panel);margin-bottom:2rem;overflow:hidden}
+    .ob-item{flex:1;padding:1rem;text-align:center;border-right:1px solid var(--border)}
+    .ob-item:last-child{border-right:none}
+    .ob-lbl{font-family:var(--fm);font-size:.58rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:.2rem}
+    .ob-val{font-family:var(--fd);font-size:1.4rem;color:var(--accent);line-height:1}
+
+    /* COMMIT */
+    .cs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2.5rem}
+    .cc{background:var(--panel);padding:1rem;text-align:center}
+    .cn{font-family:var(--fd);font-size:1.8rem;color:var(--accent);line-height:1}
+    .ct{font-family:var(--fm);font-size:.6rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:.2rem}
+
+    /* PROGRESS */
+    .pr{margin-bottom:2.5rem}
+    .ps{display:flex;align-items:flex-start;position:relative}
+    .pl{position:absolute;top:15px;left:0;right:0;height:1px;background:var(--border);z-index:0}
+    .pf{height:100%;background:var(--accent);transition:width .5s ease}
+    .pst{flex:1;display:flex;flex-direction:column;align-items:center;gap:.4rem;position:relative;z-index:1}
+    .pc2{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:var(--panel);
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--fm);font-size:.65rem;color:var(--muted);transition:all .3s}
+    .pst.active .pc2{border-color:var(--accent);color:var(--accent);background:rgba(245,168,0,.1)}
+    .pst.done .pc2{border-color:var(--green);background:rgba(34,197,94,.15);color:var(--green)}
+    .pl2{font-family:var(--fm);font-size:.55rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+    .pst.active .pl2{color:var(--accent)}
+    .pst.done .pl2{color:var(--green)}
+
+    /* STEPS */
+    .fs{display:none}
+    .fs.on{display:block;animation:fu .3s ease}
+    @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    .sh{font-family:var(--fd);font-size:2.2rem;letter-spacing:1px;margin-bottom:.3rem;line-height:1}
+    .sh span{color:var(--accent)}
+    .ss{color:var(--muted);font-size:.87rem;line-height:1.6;margin-bottom:1.8rem}
+
+    /* ── PRODUCT LIST ── */
+    .plist{border:1px solid var(--border);background:var(--border);display:flex;flex-direction:column;gap:1px;margin-bottom:1rem}
+
+    /* cada card */
+    .pcard{background:var(--panel);overflow:hidden;transition:background .2s}
+    .pcard.on{background:#171a1c;outline:2px solid var(--accent)}
+
+    /* fila superior — clickeable */
+    .prow{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;-webkit-user-select: none; suser-select:none}
+    .prow:hover{background:rgba(255,255,255,.025)}
+
+    /* checkbox visual */
+    .pchk{width:20px;height:20px;border-radius:3px;flex-shrink:0;border:1px solid var(--border);
+      background:var(--panel2);display:flex;align-items:center;justify-content:center;
+      font-size:.8rem;color:transparent;transition:all .18s;pointer-events:none}
+    .pcard.on .pchk{border-color:var(--accent);background:var(--accent);color:var(--black)}
+
+    .ptag{font-family:var(--fm);font-size:.58rem;letter-spacing:2px;color:var(--accent);
+      border:1px solid rgba(245,168,0,.3);padding:.18rem .45rem;white-space:nowrap;flex-shrink:0}
+    .ptag.or{color:var(--accent2);border-color:rgba(255,107,26,.35)}
+    .pinfo{flex:1;min-width:0}
+    .pname{font-family:var(--fd);font-size:1.5rem;letter-spacing:1px;line-height:1}
+    .pplat{font-size:.75rem;color:var(--muted);margin-top:.1rem}
+    .ppr{font-family:var(--fm);font-size:.78rem;color:var(--muted);text-align:right;flex-shrink:0}
+
+    /* fila cantidad — visible solo cuando card.on */
+    .pqrow{display:none;align-items:center;justify-content:space-between;
+      padding:.7rem 1.4rem .85rem;border-top:1px solid var(--border);background:rgba(245,168,0,.04);
+      animation:fu .2s ease}
+    .pcard.on .pqrow{display:flex}
+    .pqlbl{font-family:var(--fm);font-size:.62rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+
+    /* qty controls */
+    .qc{display:flex;align-items:center;border:1px solid var(--border)}
+    .qbtn{background:var(--panel);border:none;color:var(--white);width:36px;height:36px;
+      cursor:pointer;font-size:1.1rem;font-family:var(--fm);transition:background .15s,color .15s;
+      display:flex;align-items:center;justify-content:center}
+    .qbtn:hover{background:rgba(245,168,0,.1);color:var(--accent)}
+    .qnum{width:44px;height:36px;background:var(--panel2);display:flex;align-items:center;
+      justify-content:center;font-family:var(--fd);font-size:1.3rem;color:var(--accent);
+      border-left:1px solid var(--border);border-right:1px solid var(--border)}
+
+    /* resumen seleccion */
+    .sumwrap{margin:.5rem 0 1rem;display:none}
+    .sumwrap.on{display:block}
+    .sumlbl{font-family:var(--fm);font-size:.62rem;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:.4rem}
+    .sumitems{display:flex;flex-direction:column;gap:.25rem}
+    .sitem{font-family:var(--fm);font-size:.75rem;background:rgba(245,168,0,.07);
+      border:1px solid rgba(245,168,0,.18);padding:.3rem .75rem;
+      display:flex;justify-content:space-between;align-items:center}
+    .sitem-qty{color:var(--accent);font-size:.85rem}
+
+    /* INFO / ALERT BOXES */
+    .ibox{border:1px solid rgba(245,168,0,.2);background:rgba(245,168,0,.05);
+      padding:1.1rem 1.4rem;margin-bottom:1.4rem;font-size:.84rem;line-height:1.65;color:var(--muted)}
+    .ibox strong{color:var(--white)}
+    .ititle{font-family:var(--fm);font-size:.62rem;letter-spacing:2px;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:.45rem}
+    .abox{border:1px solid rgba(34,197,94,.22);background:rgba(34,197,94,.05);
+      padding:1.1rem 1.4rem;margin-bottom:1.4rem;font-size:.84rem;line-height:1.65;color:var(--muted)}
+    .abox strong{color:var(--white)}
+    .atitle{font-family:var(--fm);font-size:.62rem;letter-spacing:2px;color:var(--green);text-transform:uppercase;display:block;margin-bottom:.45rem}
+
+    /* DELIVERY CARDS */
+    .dc{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.4rem}
+    .dcard{background:var(--panel);padding:1.6rem 1.4rem;cursor:pointer;transition:background .2s;
+      display:flex;flex-direction:column;gap:.5rem;position:relative;border:2px solid transparent;margin:-1px}
+    .dcard:hover{background:var(--panel2)}
+    .dcard.on{background:rgba(245,168,0,.06);border-color:var(--accent)}
+    .dicon{font-size:1.4rem}
+    .dtitle{font-family:var(--fd);font-size:1.4rem;letter-spacing:1px}
+    .ddesc{font-size:.78rem;color:var(--muted);line-height:1.5}
+    .dchk{position:absolute;top:.9rem;right:.9rem;width:20px;height:20px;border-radius:50%;
+      border:1px solid var(--border);background:var(--panel);display:flex;align-items:center;
+      justify-content:center;font-size:.7rem;color:transparent;transition:all .18s}
+    .dcard.on .dchk{border-color:var(--accent);background:var(--accent);color:var(--black)}
+    .dcard.on .dchk::after{content:"✓"}
+
+    /* ZONA CARDS */
+    .zc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.4rem}
+    .zcard{background:var(--panel);padding:1.2rem .8rem;text-align:center;cursor:pointer;transition:background .2s;border:2px solid transparent;margin:-1px}
+    .zcard:hover{background:var(--panel2)}
+    .zcard.on{background:rgba(245,168,0,.06);border-color:var(--accent)}
+    .ztitle{font-family:var(--fd);font-size:1.1rem;letter-spacing:1px;margin-bottom:.25rem}
+    .zdesc{font-size:.7rem;color:var(--muted);line-height:1.4}
+
+    /* FIELDS */
+    .fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.1rem}
+    .fl{font-family:var(--fm);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+    .fl .req{color:var(--accent)}
+    .fi,.fsel,.fta{background:var(--panel);border:1px solid var(--border);color:var(--white);
+      padding:.85rem 1rem;font-family:var(--fb);font-size:.9rem;border-radius:2px;
+      outline:none;width:100%;appearance:none;transition:border-color .2s,background .2s}
+    .fi:focus,.fsel:focus,.fta:focus{border-color:var(--accent);background:rgba(245,168,0,.03)}
+    .fi.err,.fsel.err{border-color:#ef4444}
+    .fta{resize:vertical;min-height:80px}
+    .ferr{font-family:var(--fm);font-size:.72rem;color:#ef4444;display:none}
+    .ferr-g{font-family:var(--fm);font-size:.75rem;color:#ef4444;margin:.5rem 0;display:none}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+    /* DATE GRID */
+    .dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.2rem}
+    .dbtn{background:var(--panel);padding:.85rem .4rem;text-align:center;cursor:pointer;transition:background .18s;border:2px solid transparent;margin:-1px}
+    .dbtn:hover{background:var(--panel2)}
+    .dbtn.on{background:rgba(245,168,0,.08);border-color:var(--accent)}
+    .dday{font-family:var(--fm);font-size:.58rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+    .dnum{font-family:var(--fd);font-size:1.5rem;color:var(--white);line-height:1.1}
+    .dbtn.on .dnum{color:var(--accent)}
+
+    /* SUB REVEAL */
+    .sub{display:none}
+    .sub.on{display:block;animation:fu .25s ease}
+
+    /* ACTIONS */
+    .acts{display:flex;gap:.75rem;margin-top:1.8rem;flex-wrap:wrap}
+    .btn-n{flex:1;background:var(--accent);color:var(--black);font-family:var(--fb);font-weight:700;
+      font-size:.85rem;letter-spacing:2px;text-transform:uppercase;padding:1rem 2rem;
+      border:none;border-radius:2px;cursor:pointer;transition:background .2s,transform .15s}
+    .btn-n:hover{background:var(--accent2);transform:translateY(-2px)}
+    .btn-b{background:transparent;color:var(--muted);font-family:var(--fb);font-size:.82rem;
+      letter-spacing:2px;text-transform:uppercase;padding:1rem 1.4rem;border:1px solid var(--border);
+      border-radius:2px;cursor:pointer;transition:border-color .2s,color .2s}
+    .btn-b:hover{border-color:var(--muted);color:var(--white)}
+
+    /* TICKET */
+    .tkt{background:var(--panel);border:1px solid var(--border);font-family:var(--fm);font-size:.8rem;
+      line-height:1.8;padding:1.8rem;margin-bottom:1.4rem;position:relative}
+    .tkt::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+    .tk-head{text-align:center;padding-bottom:.9rem;border-bottom:1px dashed var(--border);margin-bottom:.9rem}
+    .tk-title{font-family:var(--fd);font-size:1.4rem;letter-spacing:3px}
+    .tk-sub{font-size:.68rem;color:var(--muted)}
+    .tk-row{display:flex;justify-content:space-between;gap:1rem;padding:.3rem 0;border-bottom:1px dashed rgba(42,45,48,.5)}
+    .tk-row:last-of-type{border-bottom:none}
+    .tk-k{color:var(--muted)}
+    .tk-v{color:var(--white);font-weight:600;text-align:right}
+    .tk-prod{padding:.6rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:.5rem 0;display:flex;flex-direction:column;gap:.5rem}
+    .tk-pline{display:flex;flex-direction:column;gap:.05rem}
+    .tk-pname{font-family:var(--fd);font-size:1.15rem;letter-spacing:1px}
+    .tk-pdet{font-size:.72rem;color:var(--muted)}
+    .tk-note{font-size:.72rem;color:var(--accent);border-top:1px dashed var(--border);margin-top:.8rem;padding-top:.7rem;line-height:1.6}
+    .tk-nota{font-size:.72rem;color:var(--muted);border-top:1px dashed var(--border);margin-top:.6rem;padding-top:.6rem}
+
+    .btn-wa{display:flex;align-items:center;justify-content:center;gap:.7rem;width:100%;
+      background:#25d366;color:#fff;font-family:var(--fb);font-weight:700;font-size:.88rem;
+      letter-spacing:1px;text-transform:uppercase;padding:1.1rem 2rem;border:none;border-radius:2px;
+      cursor:pointer;text-decoration:none;transition:opacity .2s,transform .15s}
+    .btn-wa:hover{opacity:.88;transform:translateY(-2px)}
+
+    /* WA float */
+    .waf{position:fixed;bottom:1.4rem;right:1.4rem;z-index:200;background:#25d366;color:#fff;
+      width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 4px 18px rgba(37,211,102,.35);transition:transform .2s;text-decoration:none}
+    .waf:hover{transform:scale(1.1)}
+
+    /* RESPONSIVE */
+    @media(max-width:600px){
+      .dc{grid-template-columns:1fr}
+      .zc{grid-template-columns:1fr}
+      .two{grid-template-columns:1fr}
+      .dgrid{grid-template-columns:repeat(3,1fr)}
+      .cs{grid-template-columns:1fr}
+      .wrap{padding:90px 1rem 4rem}
+      nav{padding:.9rem 1.2rem}
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<nav>
+  <a href="index.html" class="logo">BALANZAS<span>.</span></a>
+  <a href="javascript:history.back()" class="back">&#8592; Volver</a>
+</nav>
+
+<a href="https://wa.me/5491140591621" class="waf" target="_blank" aria-label="WhatsApp" rel="noopener">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+</a>
+
+<div class="wrap">
+
+  <div class="ph">
+    <span class="ph-tag">// Reserva de producto — Stock garantizado 48hs</span>
+    <h1 class="ph-title">ORDEN DE<br><span>COMPRA</span></h1>
+    <p class="ph-sub">Completá el formulario y recibís tu número de orden. El producto queda reservado para vos por <strong style="color:var(--white)">48 horas hábiles</strong>.</p>
+  </div>
+
+  <div class="ob">
+    <div class="ob-item"><span class="ob-lbl">N&deg; de Orden</span><span class="ob-val" id="oNum">#---</span></div>
+    <div class="ob-item"><span class="ob-lbl">Fecha</span><span class="ob-val" id="oDate" style="font-size:.95rem;padding-top:5px">--/--</span></div>
+    <div class="ob-item"><span class="ob-lbl">Estado</span><span class="ob-val" style="color:var(--muted);font-size:.8rem;padding-top:8px">EN PROCESO</span></div>
+  </div>
+
+  <div class="cs">
+    <div class="cc"><div class="cn">48</div><div class="ct">Hs habiles de reserva</div></div>
+    <div class="cc"><div class="cn">$0</div><div class="ct">Pago previo CABA / GBA</div></div>
+    <div class="cc"><div class="cn">24</div><div class="ct">Hs envio si coordinás antes de las 12</div></div>
+  </div>
+
+  <div class="pr">
+    <div class="ps" id="ps">
+      <div class="pl"><div class="pf" id="pf" style="width:0%"></div></div>
+      <div class="pst active" data-s="1"><div class="pc2">01</div><div class="pl2">Producto</div></div>
+      <div class="pst" data-s="2"><div class="pc2">02</div><div class="pl2">Entrega</div></div>
+      <div class="pst" data-s="3"><div class="pc2">03</div><div class="pl2">Mis datos</div></div>
+      <div class="pst" data-s="4"><div class="pc2">04</div><div class="pl2">Confirmar</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════ PASO 1 — PRODUCTOS ═══════ -->
+  <div class="fs on" id="s1">
+    <h2 class="sh">Que <span>modelos</span> queres?</h2>
+    <p class="ss">Elegí uno o varios. Ajusta la cantidad de cada uno con + / −</p>
+
+    <div class="plist">
+
+      <div class="pcard" id="pc-150">
+        <div class="prow" onclick="tog('150')">
+          <div class="pchk" id="chk-150">&#10003;</div>
+          <span class="ptag">BI-150</span>
+          <div class="pinfo"><div class="pname">150 KG</div><div class="pplat">Plataforma 40×30 cm</div></div>
+          <div class="ppr">$ 95.000</div>
+        </div>
+        <div class="pqrow">
+          <span class="pqlbl">Cantidad</span>
+          <div class="qc">
+            <button class="qbtn" onclick="chq('150',-1)">−</button>
+            <div class="qnum" id="qn-150">1</div>
+            <button class="qbtn" onclick="chq('150',1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" id="pc-300">
+        <div class="prow" onclick="tog('300')">
+          <div class="pchk" id="chk-300">&#10003;</div>
+          <span class="ptag or">MAS VENDIDO</span>
+          <div class="pinfo"><div class="pname">300 KG</div><div class="pplat">Plataforma 50×40 cm</div></div>
+          <div class="ppr">$ 140.000</div>
+        </div>
+        <div class="pqrow">
+          <span class="pqlbl">Cantidad</span>
+          <div class="qc">
+            <button class="qbtn" onclick="chq('300',-1)">−</button>
+            <div class="qnum" id="qn-300">1</div>
+            <button class="qbtn" onclick="chq('300',1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" id="pc-500">
+        <div class="prow" onclick="tog('500')">
+          <div class="pchk" id="chk-500">&#10003;</div>
+          <span class="ptag">BI-500</span>
+          <div class="pinfo"><div class="pname">500 KG</div><div class="pplat">Plataforma 55×45 cm</div></div>
+          <div class="ppr">$ 215.000</div>
+        </div>
+        <div class="pqrow">
+          <span class="pqlbl">Cantidad</span>
+          <div class="qc">
+            <button class="qbtn" onclick="chq('500',-1)">−</button>
+            <div class="qnum" id="qn-500">1</div>
+            <button class="qbtn" onclick="chq('500',1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" id="pc-600">
+        <div class="prow" onclick="tog('600')">
+          <div class="pchk" id="chk-600">&#10003;</div>
+          <span class="ptag">NUEVO</span>
+          <div class="pinfo"><div class="pname">600 KG</div><div class="pplat">Plataforma 60×50 cm</div></div>
+          <div class="ppr" style="color:var(--muted)">Consultar</div>
+        </div>
+        <div class="pqrow">
+          <span class="pqlbl">Cantidad</span>
+          <div class="qc">
+            <button class="qbtn" onclick="chq('600',-1)">−</button>
+            <div class="qnum" id="qn-600">1</div>
+            <button class="qbtn" onclick="chq('600',1)">+</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sumwrap" id="sw"><div class="sumlbl">Tu seleccion</div><div class="sumitems" id="si"></div></div>
+
+    <p class="ferr-g" id="ep1">Selecciona al menos un modelo para continuar.</p>
+
+    <div class="ibox">
+      <span class="ititle">Al generar esta orden</span>
+      Los productos quedan <strong>reservados de palabra por 48 horas habiles</strong>. Te contactamos para coordinar pago y entrega. Sin pago previo para CABA y GBA.
+    </div>
+
+    <div class="acts"><button class="btn-n" onclick="go(2)">Continuar — Elegir entrega</button></div>
+  </div>
+
+  <!-- ═══════ PASO 2 — ENTREGA ═══════ -->
+  <div class="fs" id="s2">
+    <h2 class="sh">Como lo <span>recibes</span>?</h2>
+    <p class="ss">Elegí la modalidad de entrega.</p>
+
+    <div class="dc">
+      <div class="dcard" id="dr" onclick="selD('retiro')">
+        <div class="dchk"></div>
+        <div class="dicon">&#127978;</div>
+        <div class="dtitle">RETIRO</div>
+        <div class="ddesc">Pases a buscar por nuestro local en Caballito. Coordinamos por WhatsApp.</div>
+      </div>
+      <div class="dcard" id="de" onclick="selD('envio')">
+        <div class="dchk"></div>
+        <div class="dicon">&#128230;</div>
+        <div class="dtitle">ENVIO</div>
+        <div class="ddesc">A domicilio CABA / GBA o por correo al interior del pais.</div>
+      </div>
+    </div>
+
+    <div class="sub" id="sb-retiro">
+      <div class="abox">
+        <span class="atitle">Punto de retiro</span>
+        <strong>Juan B. Alberdi 326, Caballito, CABA.</strong> Coordinamos dia y horario por WhatsApp una vez confirmada la orden.
+      </div>
+    </div>
+
+    <div class="sub" id="sb-envio">
+      <p class="ss" style="margin-bottom:1rem">Selecciona tu zona:</p>
+      <div class="zc">
+        <div class="zcard" id="zca" onclick="selZ('caba')"><div class="ztitle">CABA</div><div class="zdesc">Ciudad de Buenos Aires</div></div>
+        <div class="zcard" id="zgb" onclick="selZ('gba')"><div class="ztitle">GBA</div><div class="zdesc">Alrededores de CABA</div></div>
+        <div class="zcard" id="zin" onclick="selZ('interior')"><div class="ztitle">INTERIOR</div><div class="zdesc">Correo al resto del pais</div></div>
+      </div>
+
+      <div class="sub" id="sb-cg">
+        <div class="abox">
+          <span class="atitle">Contra entrega — Sin pago previo</span>
+          Para <strong>CABA y GBA</strong> el envio es <strong>contra entrega</strong>: abonas cuando recibes. Si coordinas antes de las 12:00 hs, el envio puede ser ese mismo dia.
+        </div>
+        <div class="sub" id="sb-part">
+          <div class="fg">
+            <label class="fl">Partido <span class="req">*</span></label>
+            <select class="fsel" id="partido">
+              <option value="">Selecciona tu partido</option>
+              <option>Vicente Lopez</option><option>General San Martin</option>
+              <option>Tres de Febrero</option><option>La Matanza</option>
+              <option>Lomas de Zamora</option><option>Lanus</option><option>Avellaneda</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Direccion de entrega <span class="req">*</span></label>
+          <input type="text" class="fi" id="dirE" placeholder="Ej: Av. Corrientes 1234, piso 2"/>
+        </div>
+        <div class="ibox">
+          <span class="ititle">Programa tu envio</span>
+          Selecciona la fecha en que queres recibir el producto. Solo dias habiles (lunes a viernes). Si coordinas <strong>antes de las 12:00 hs</strong>, el envio puede ser ese mismo dia.
+        </div>
+        <div class="dgrid" id="dg"></div>
+        <p class="ferr-g" id="ef">Selecciona una fecha de entrega.</p>
+      </div>
+
+      <div class="sub" id="sb-int">
+        <div class="ibox">
+          <span class="ititle">Envio al interior del pais</span>
+          Despachamos por <strong>Via Cargo, Andreani o Correo Argentino</strong>. El pago se realiza por transferencia o MercadoPago antes del despacho. Te enviamos el numero de seguimiento por WhatsApp.
+        </div>
+        <div class="two">
+          <div class="fg">
+            <label class="fl">Provincia <span class="req">*</span></label>
+            <select class="fsel" id="prov">
+              <option value="">Selecciona</option>
+              <option>Buenos Aires</option><option>Catamarca</option><option>Chaco</option>
+              <option>Chubut</option><option>Cordoba</option><option>Corrientes</option>
+              <option>Entre Rios</option><option>Formosa</option><option>Jujuy</option>
+              <option>La Pampa</option><option>La Rioja</option><option>Mendoza</option>
+              <option>Misiones</option><option>Neuquen</option><option>Rio Negro</option>
+              <option>Salta</option><option>San Juan</option><option>San Luis</option>
+              <option>Santa Cruz</option><option>Santa Fe</option><option>Santiago del Estero</option>
+              <option>Tierra del Fuego</option><option>Tucuman</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label class="fl">Localidad <span class="req">*</span></label>
+            <input type="text" class="fi" id="loc" placeholder="Tu localidad"/>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Direccion completa <span class="req">*</span></label>
+          <input type="text" class="fi" id="dirI" placeholder="Calle, numero, piso/dpto"/>
+        </div>
+      </div>
+    </div>
+
+    <p class="ferr-g" id="ep2">Selecciona una modalidad de entrega.</p>
+
+    <div class="acts">
+      <button class="btn-b" onclick="go(1)">Atras</button>
+      <button class="btn-n" onclick="go(3)">Continuar — Mis datos</button>
+    </div>
+  </div>
+
+  <!-- ═══════ PASO 3 — DATOS ═══════ -->
+  <div class="fs" id="s3">
+    <h2 class="sh">Tus <span>datos</span></h2>
+    <p class="ss">Los necesitamos para generarte la orden y coordinarte.</p>
+    <div class="two">
+      <div class="fg">
+        <label class="fl">Nombre y apellido <span class="req">*</span></label>
+        <input type="text" class="fi" id="nom" placeholder="Tu nombre completo"/>
+        <span class="ferr" id="en">Campo obligatorio.</span>
+      </div>
+      <div class="fg">
+        <label class="fl">Telefono / WhatsApp <span class="req">*</span></label>
+        <input type="tel" class="fi" id="tel" placeholder="Ej: 11 5555-5555"/>
+        <span class="ferr" id="et">Campo obligatorio.</span>
+      </div>
+    </div>
+    <div class="two">
+      <div class="fg">
+        <label class="fl">Email <span class="req">*</span></label>
+        <input type="email" class="fi" id="mail" placeholder="tu@email.com"/>
+        <span class="ferr" id="em">Campo obligatorio.</span>
+      </div>
+      <div class="fg">
+        <label class="fl">DNI <span class="req">*</span></label>
+        <input type="text" class="fi" id="dni" placeholder="Sin puntos" inputmode="numeric"/>
+        <span class="ferr" id="ed">Campo obligatorio.</span>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Nota u observacion (opcional)</label>
+      <textarea class="fta" id="nota" placeholder="Horario preferido, acceso al edificio, etc."></textarea>
+    </div>
+    <div class="acts">
+      <button class="btn-b" onclick="go(2)">Atras</button>
+      <button class="btn-n" onclick="go(4)">Ver resumen y confirmar</button>
+    </div>
+  </div>
+
+  <!-- ═══════ PASO 4 — TICKET ═══════ -->
+  <div class="fs" id="s4">
+    <h2 class="sh">Confirma tu <span>orden</span></h2>
+    <p class="ss">Revisa todo y envianos la orden por WhatsApp. Te respondemos para coordinar.</p>
+
+    <div class="tkt">
+      <div class="tk-head">
+        <div class="tk-title">ORDEN DE COMPRA</div>
+        <div class="tk-sub" id="tkN">#--- — BalanzasCaballito</div>
+        <div class="tk-sub" id="tkD" style="margin-top:.15rem"></div>
+      </div>
+      <div class="tk-row"><span class="tk-k">Nombre</span><span class="tk-v" id="tNom">-</span></div>
+      <div class="tk-row"><span class="tk-k">DNI</span><span class="tk-v" id="tDNI">-</span></div>
+      <div class="tk-row"><span class="tk-k">Contacto</span><span class="tk-v" id="tCont">-</span></div>
+      <div class="tk-prod" id="tProds"></div>
+      <div class="tk-row"><span class="tk-k" id="tEK">Entrega</span><span class="tk-v" id="tEV">-</span></div>
+      <div class="tk-row" id="tFR" style="display:none"><span class="tk-k">Envio programado</span><span class="tk-v" id="tF">-</span></div>
+      <div class="tk-nota" id="tNota" style="display:none"></div>
+      <div class="tk-note">La orden de compra tiene validez de 48 Hs habiles para la reserva del producto.</div>
+    </div>
+
+    <a href="#" class="btn-wa" id="bwa" target="_blank">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      Enviar Orden por WhatsApp
+    </a>
+    <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:.9rem;font-family:var(--fm);letter-spacing:1px">
+      Sin pago previo para CABA/GBA. Reserva de palabra 48hs habiles.
+    </p>
+    <div class="acts" style="margin-top:1.2rem">
+      <button class="btn-b" onclick="go(3)">Corregir datos</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── CATALOGO ───────────────────────────────────────────────────
+var PRODS = {
+  '150':{ name:'Bascula 150 kg', plat:'40x30 cm' },
+  '300':{ name:'Bascula 300 kg', plat:'50x40 cm' },
+  '500':{ name:'Bascula 500 kg', plat:'55x45 cm' },
+  '600':{ name:'Bascula 600 kg', plat:'60x50 cm' }
+};
+
+// ─── ESTADO ─────────────────────────────────────────────────────
+var sel  = {};   // { '150':2, '300':1 }
+var step = 1;
+var del  = null; // 'retiro'|'envio'
+var zona = null; // 'caba'|'gba'|'interior'
+var fecha= null;
+
+// orden num + fecha
+var oN   = Math.floor(Math.random()*900)+100;
+var now  = new Date();
+var dstr = now.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
+var tstr = now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+document.getElementById('oNum').textContent  = '#'+oN;
+document.getElementById('oDate').textContent = dstr;
+
+// ─── PROGRESO ───────────────────────────────────────────────────
+function updProg(s){
+  document.querySelectorAll('.pst').forEach(function(el,i){
+    el.classList.remove('active','done');
+    if(i+1<s) el.classList.add('done');
+    else if(i+1===s) el.classList.add('active');
+  });
+  document.getElementById('pf').style.width=[0,33,66,100][s-1]+'%';
+}
+
+// ─── NAVEGACION ─────────────────────────────────────────────────
+function go(n){
+  if(n>step && !val(step)) return;
+  document.getElementById('s'+step).classList.remove('on');
+  step=n;
+  document.getElementById('s'+n).classList.add('on');
+  updProg(n);
+  if(n===4) buildTkt();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ─── VALIDACION ─────────────────────────────────────────────────
+function val(s){
+  if(s===1){
+    var ok=Object.keys(sel).length>0;
+    document.getElementById('ep1').style.display=ok?'none':'block';
+    return ok;
+  }
+  if(s===2){
+    var e2=document.getElementById('ep2');
+    if(!del){ e2.textContent='Selecciona una modalidad de entrega.'; e2.style.display='block'; return false; }
+    if(del==='envio'){
+      if(!zona){ e2.textContent='Selecciona tu zona de envio.'; e2.style.display='block'; return false; }
+      if(zona==='caba'||zona==='gba'){
+        if(!fecha){ document.getElementById('ef').style.display='block'; return false; }
+        document.getElementById('ef').style.display='none';
+        var d=document.getElementById('dirE').value.trim();
+        if(!d){ document.getElementById('dirE').classList.add('err'); return false; }
+        document.getElementById('dirE').classList.remove('err');
+      }
+      if(zona==='interior'){
+        if(!document.getElementById('prov').value||
+           !document.getElementById('loc').value.trim()||
+           !document.getElementById('dirI').value.trim()){ return false; }
+      }
+    }
+    e2.style.display='none';
+    return true;
+  }
+  if(s===3){
+    var ok=true;
+    [['nom','en'],['tel','et'],['mail','em'],['dni','ed']].forEach(function(p){
+      var v=document.getElementById(p[0]).value.trim();
+      document.getElementById(p[1]).style.display=v?'none':'block';
+      if(!v) ok=false;
+    });
+    return ok;
+  }
+  return true;
+}
+
+// ─── TOGGLE PRODUCTO ────────────────────────────────────────────
+function tog(id){
+  var card=document.getElementById('pc-'+id);
+  if(sel[id]){
+    delete sel[id];
+    card.classList.remove('on');
+  } else {
+    sel[id]=1;
+    card.classList.add('on');
+  }
+  updSum();
+  document.getElementById('ep1').style.display='none';
+}
+
+function chq(id,d){
+  if(!sel[id]) return;
+  sel[id]=Math.max(1,Math.min(10,sel[id]+d));
+  document.getElementById('qn-'+id).textContent=sel[id];
+  updSum();
+}
+
+function updSum(){
+  var ids=Object.keys(sel);
+  var w=document.getElementById('sw');
+  var li=document.getElementById('si');
+  if(!ids.length){ w.classList.remove('on'); return; }
+  w.classList.add('on');
+  li.innerHTML=ids.map(function(id){
+    return '<div class="sitem">'+PRODS[id].name+' — '+PRODS[id].plat+'<span class="sitem-qty">x'+sel[id]+'</span></div>';
+  }).join('');
+}
+
+// preselect via URL
+(function(){
+  var p=new URLSearchParams(location.search).get('prod');
+  if(p&&PRODS[p]) tog(p);
+})();
+
+// ─── ENTREGA ────────────────────────────────────────────────────
+function selD(tipo){
+  ['retiro','envio'].forEach(function(t){
+    document.getElementById('d'+(t==='retiro'?'r':'e')).classList.toggle('on',t===tipo);
+    document.getElementById('sb-'+t).classList.toggle('on',t===tipo);
+  });
+  del=tipo; zona=null; fecha=null;
+  document.getElementById('ep2').style.display='none';
+}
+
+function selZ(z){
+  [['caba','zca'],['gba','zgb'],['interior','zin']].forEach(function(p){
+    document.getElementById(p[1]).classList.toggle('on',p[0]===z);
+  });
+  zona=z; fecha=null;
+  document.getElementById('sb-cg').classList.toggle('on',z==='caba'||z==='gba');
+  document.getElementById('sb-int').classList.toggle('on',z==='interior');
+  document.getElementById('sb-part').classList.toggle('on',z==='gba');
+  document.getElementById('ep2').style.display='none';
+  if(z==='caba'||z==='gba') buildDates();
+}
+
+function buildDates(){
+  var g=document.getElementById('dg'); g.innerHTML='';
+  var DAYS=['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
+  var t=new Date(); var n=0;
+  for(var i=0;i<14&&n<8;i++){
+    var d=new Date(t); d.setDate(t.getDate()+i);
+    var wd=d.getDay(); if(wd===0||wd===6) continue;
+    (function(dd,w,lbl){
+      var btn=document.createElement('div');
+      btn.className='dbtn';
+      btn.innerHTML='<div class="dday">'+DAYS[w]+'</div><div class="dnum">'+dd.getDate()+'</div>';
+      btn.onclick=function(){
+        document.querySelectorAll('.dbtn').forEach(function(b){b.classList.remove('on');});
+        this.classList.add('on');
+        fecha=dd.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'})+' ('+DAYS[w]+')';
+        document.getElementById('ef').style.display='none';
+      };
+      g.appendChild(btn);
+    })(d,wd); n++;
+  }
+}
+
+// ─── TICKET ─────────────────────────────────────────────────────
+function buildTkt(){
+  document.getElementById('tkN').textContent='#'+oN+' — BalanzasCaballito';
+  document.getElementById('tkD').textContent=dstr+' — '+tstr+' hs';
+  document.getElementById('tNom').textContent=document.getElementById('nom').value.trim();
+  document.getElementById('tDNI').textContent=document.getElementById('dni').value.trim();
+  document.getElementById('tCont').textContent=document.getElementById('mail').value.trim()+' | '+document.getElementById('tel').value.trim();
+
+  var ids=Object.keys(sel);
+  document.getElementById('tProds').innerHTML=ids.map(function(id){
+    var q=sel[id];
+    return '<div class="tk-pline"><div class="tk-pname">'+q+'x '+PRODS[id].name+'</div><div class="tk-pdet">Plataforma '+PRODS[id].plat+'</div></div>';
+  }).join('');
+
+  var ek='Entrega',ev='',sf=false;
+  if(del==='retiro'){
+    ev='Retiro — Juan B. Alberdi 326, Caballito';
+  } else if(zona==='caba'){
+    ev='CABA — '+document.getElementById('dirE').value+' (contra entrega)'; sf=true;
+  } else if(zona==='gba'){
+    ev='GBA ('+document.getElementById('partido').value+') — '+document.getElementById('dirE').value+' (contra entrega)'; sf=true;
+  } else if(zona==='interior'){
+    ek='Envio interior';
+    ev=document.getElementById('prov').value+', '+document.getElementById('loc').value+' — '+document.getElementById('dirI').value;
+  }
+  document.getElementById('tEK').textContent=ek;
+  document.getElementById('tEV').textContent=ev;
+  document.getElementById('tFR').style.display=sf?'flex':'none';
+  if(sf) document.getElementById('tF').textContent=fecha||'-';
+
+  var nota=document.getElementById('nota').value.trim();
+  var nel=document.getElementById('tNota');
+  if(nota){ nel.textContent='Nota: '+nota; nel.style.display='block'; } else nel.style.display='none';
+
+  // WA msg
+  var m='--- Orden de Compra #'+oN+' ---\n';
+  m+='Fecha: '+dstr+' '+tstr+' hs\n\n';
+  m+='Nombre: '+document.getElementById('nom').value.trim()+'\n';
+  m+='DNI: '+document.getElementById('dni').value.trim()+'\n';
+  m+='Tel: '+document.getElementById('tel').value.trim()+'\n';
+  m+='Email: '+document.getElementById('mail').value.trim()+'\n\n';
+  m+='--- Pedido ---\n';
+  ids.forEach(function(id){ m+=sel[id]+'x '+PRODS[id].name+' ('+PRODS[id].plat+')\n'; });
+  m+='\n';
+  if(del==='retiro'){
+    m+='Retira: Juan B. Alberdi 326, Caballito\n';
+  } else if(zona==='caba'){
+    m+='Envio CABA contra entrega: '+document.getElementById('dirE').value+'\n';
+    m+='Fecha programada: '+(fecha||'-')+'\n';
+    m+='RECORDATORIO: Pago contra entrega al recibir.\n';
+  } else if(zona==='gba'){
+    m+='Envio GBA ('+document.getElementById('partido').value+') contra entrega: '+document.getElementById('dirE').value+'\n';
+    m+='Fecha programada: '+(fecha||'-')+'\n';
+    m+='RECORDATORIO: Pago contra entrega al recibir.\n';
+  } else if(zona==='interior'){
+    m+='Envio interior — '+document.getElementById('prov').value+', '+document.getElementById('loc').value+'\n';
+    m+='Direccion: '+document.getElementById('dirI').value+'\n';
+    m+='Pendiente: cotizacion flete + pago previo.\n';
+  }
+  if(nota) m+='\nNota: '+nota+'\n';
+  m+='\nLa orden tiene validez de 48 Hs habiles para la reserva del producto.';
+  document.getElementById('bwa').href='https://wa.me/5491140591621?text='+encodeURIComponent(m);
+}
+
+updProg(1);
+</script>
+</body>
+</html>
