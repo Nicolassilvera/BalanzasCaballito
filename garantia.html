@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Políticas de Garantía – TecnoFan Balanzas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    
+    
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0a0a0a; --dark: #111214; --panel: #161819; --border: #2a2d30;
+  --accent: #f5a800; --accent2: #ff6b1a; --white: #f0ede8; --muted: #8a8f96;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--black); color: var(--white); font-family: var(--font-body); overflow-x: hidden; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2.5rem;
+  background: rgba(10,10,10,0.94); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 3px; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+.nav-cta { background: var(--accent); color: var(--black) !important; padding: 0.5rem 1.2rem; font-weight: 700 !important; border-radius: 2px; }
+.nav-cta:hover { background: var(--accent2) !important; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.3s; }
+.mobile-menu { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.98); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 3px; color: var(--white); text-decoration: none; transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--accent); }
+.close-btn { position: absolute; top: 1.5rem; right: 2rem; background: none; border: none; color: var(--white); font-size: 2rem; cursor: pointer; font-family: var(--font-mono); }
+
+/* FOOTER */
+footer { background: var(--black); border-top: 1px solid var(--border); padding: 3rem 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+.footer-logo { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 3px; }
+.footer-logo span { color: var(--accent); }
+.footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; }
+.footer-links { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
+.footer-links a { font-size: 0.75rem; color: var(--muted); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent); }
+
+/* COMMON */
+.section-tag { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.75rem; }
+.section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; letter-spacing: 1px; margin-bottom: 1rem; }
+.section-desc { color: var(--muted); max-width: 520px; line-height: 1.7; font-size: 0.95rem; }
+.btn-primary { background: var(--accent); color: var(--black); font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.9rem 2.2rem; text-decoration: none; border-radius: 2px; transition: background 0.2s, transform 0.15s; display: inline-block; }
+.btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+.btn-outline { border: 1px solid var(--border); color: var(--white); font-weight: 500; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.9rem 2.2rem; text-decoration: none; border-radius: 2px; transition: border-color 0.2s, transform 0.15s; display: inline-block; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.btn-mp { background: #009ee3; color: #fff; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; padding: 0.9rem 2.2rem; text-decoration: none; border-radius: 2px; transition: opacity 0.2s, transform 0.15s; display: flex; align-items: center; justify-content: center; gap: 0.6rem; }
+.btn-mp:hover { opacity: 0.88; transform: translateY(-2px); }
+.whatsapp-fixed { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 200; background: #25d366; color: #fff; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: transform 0.2s; text-decoration: none; }
+.whatsapp-fixed:hover { transform: scale(1.1); }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+/* FAQ */
+.faq-item { cursor: pointer; overflow: hidden; border-bottom: 1px solid var(--border); }
+.faq-q { padding: 1.4rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.faq-q span { font-weight: 600; font-size: 0.9rem; flex: 1; }
+.faq-toggle { color: var(--accent); font-size: 1.3rem; font-family: var(--font-mono); transition: transform 0.3s; flex-shrink: 0; }
+.faq-item.open .faq-toggle { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
+.faq-a-inner { padding: 0 0 1.4rem; font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+.faq-item.open .faq-a { max-height: 400px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) { .nav-links { display: none; } .hamburger { display: flex; } }
+@media (max-width: 600px) { nav { padding: 1rem 1.2rem; } footer { flex-direction: column; text-align: center; } .footer-links { justify-content: center; } }
+
+    /* ── PRODUCT PAGE ── */
+    .prod-hero { padding-top: 100px; background: var(--dark); }
+    .prod-inner { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .prod-img-wrap { position: relative; background: #1a1c1f; border: 1px solid var(--border); overflow: hidden; }
+    .prod-img-wrap img { width: 100%; aspect-ratio: 1; object-fit: contain; padding: 1.5rem; }
+    .prod-badge { position: absolute; top: 1rem; left: 1rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 2px; background: rgba(245,168,0,0.12); color: #f5a800; border: 1px solid #f5a80040; padding: 0.3rem 0.7rem; }
+    .prod-breadcrumb { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 2px; margin-bottom: 1.2rem; }
+    .prod-breadcrumb a { color: var(--muted); text-decoration: none; } .prod-breadcrumb a:hover { color: var(--accent); }
+    .prod-title { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5rem); line-height: 0.95; letter-spacing: 1px; margin-bottom: 1rem; }
+    .prod-title span { color: #f5a800; }
+    .prod-price { font-family: var(--font-display); font-size: 3rem; color: #f5a800; margin: 1.5rem 0; line-height: 1; }
+    .prod-price small { font-size: 1.2rem; color: var(--muted); font-family: var(--font-body); font-weight: 400; }
+    .prod-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 2rem 0; }
+    .spec-cell { background: var(--panel); padding: 1rem 1.2rem; }
+    .spec-k { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.2rem; }
+    .spec-v { font-size: 0.95rem; font-weight: 600; }
+    .prod-features { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0 2rem; }
+    .prod-features li { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.88rem; line-height: 1.5; }
+    .prod-features li::before { content: '✓'; color: #f5a800; font-family: var(--font-mono); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .prod-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+    .btn-wa { background: #25d366; color: #fff; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; padding: 1rem 2rem; text-decoration: none; border-radius: 2px; display: flex; align-items: center; justify-content: center; gap: 0.6rem; transition: opacity 0.2s, transform 0.15s; }
+    .btn-wa:hover { opacity: 0.9; transform: translateY(-2px); }
+    /* ── COMMENT ZONE ── */
+    /* 🖼️ FOTO: Reemplazá el src del <img> dentro de .prod-img-wrap con tu foto real del producto */
+    /* 💲 PRECIO: Cambiá el texto dentro de .prod-price */
+    /* 🛒 MERCADOPAGO: Reemplazá href="#MERCADOPAGO-LINK" con tu link real de MP */
+    /* 📱 WHATSAPP: El número está en href de btn-wa — actualizalo si cambia */
+    .prod-guarantee { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; }
+    .prod-guarantee span { color: #f5a800; font-size: 1rem; }
+
+    /* ── DESCRIPTION ── */
+    .prod-desc { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+    .prod-desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
+    .feature-card { background: var(--panel); border: 1px solid var(--border); padding: 1.8rem; border-left: 3px solid #f5a800; }
+    .feature-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .feature-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── FAQ ── */
+    .prod-faq { background: var(--panel); padding: 4rem 2rem; }
+    .prod-faq-inner { max-width: 1100px; margin: 0 auto; }
+    .prod-faq-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4rem; margin-top: 2rem; }
+
+    /* ── ALSO LIKE ── */
+    .also-like { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+    .also-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; background: var(--border); border: 1px solid var(--border); margin-top: 2rem; }
+    .also-card { background: var(--panel); padding: 1.8rem; text-decoration: none; color: var(--white); transition: background 0.2s; display: block; }
+    .also-card:hover { background: #1c1e20; }
+    .also-card h3 { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .also-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 1rem; }
+    .also-card .also-price { font-family: var(--font-mono); color: var(--accent); font-size: 1rem; }
+
+    @media (max-width:900px) {
+      .prod-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .prod-desc-grid { grid-template-columns: 1fr; }
+      .prod-faq-cols { grid-template-columns: 1fr; }
+      .also-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width:600px) { .prod-inner { padding: 2rem 1.2rem 3rem; } .prod-desc, .prod-faq, .also-like { padding: 3rem 1.2rem; } }
+  
+    .page-hero { padding: 120px 2.5rem 5rem; background: var(--dark); border-bottom: 1px solid var(--border); text-align: center; }
+    .page-hero .section-tag { display: block; margin-bottom: 0.75rem; }
+    .page-hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 7rem); line-height: 0.9; margin-bottom: 1.5rem; }
+    .page-hero h1 span { color: var(--accent); }
+    .page-hero p { color: var(--muted); max-width: 550px; margin: 0 auto; line-height: 1.7; }
+    .gar-wrap { max-width: 900px; margin: 0 auto; padding: 5rem 2rem; }
+    .gar-section { margin-bottom: 3.5rem; }
+    .gar-section h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+    .gar-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); border: 1px solid rgba(245,168,0,0.3); padding: 0.2rem 0.5rem; }
+    .gar-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5px; background: var(--border); border: 1px solid var(--border); }
+    .gar-card { background: var(--panel); padding: 1.8rem; }
+    .gar-card h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--accent); }
+    .gar-card p, .gar-card li { font-size: 0.86rem; color: var(--muted); line-height: 1.7; }
+    .gar-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; padding: 0; }
+    .gar-card ul li::before { content: '→ '; color: var(--accent); font-family: var(--font-mono); }
+    .gar-highlight { background: rgba(245,168,0,0.06); border: 1px solid rgba(245,168,0,0.2); padding: 2rem; text-align: center; margin-bottom: 3.5rem; }
+    .gar-highlight .big { font-family: var(--font-display); font-size: 5rem; color: var(--accent); line-height: 1; display: block; }
+    .gar-highlight p { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+    .faq-section { margin-top: 4rem; }
+    .gar-cta { background: var(--panel); border: 1px solid var(--border); padding: 2.5rem; text-align: center; margin-top: 4rem; }
+    .gar-cta h3 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.75rem; }
+    .gar-cta p { color: var(--muted); font-size: 0.88rem; margin-bottom: 2rem; max-width: 440px; margin-left: auto; margin-right: auto; }
+    @media(max-width:900px) { .gar-cards { grid-template-columns: 1fr; } }
+    @media(max-width:600px) { .gar-wrap { padding: 3rem 1.2rem; } .page-hero { padding: 100px 1.2rem 3rem; } }
+  </style>
+</head>
+<body>
+  <nav>
+  <a href="index.html" class="nav-logo">BALANZAS<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#catalogo">Catálogo</a></li>
+    <li><a href="index.html#quienes-somos">Quiénes Somos</a></li>
+    <li><a href="garantia.html">Garantía</a></li>
+    <li><a href="calibracion.html">Calibración</a></li>
+    <li><a href="index.html#contacto" class="nav-cta">Consultar</a></li>
+  </ul>
+  <button class="hamburger" onclick="openMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-btn" onclick="closeMenu()">✕</button>
+  <a href="index.html" onclick="closeMenu()">Inicio</a>
+  <a href="index.html#catalogo" onclick="closeMenu()">Catálogo</a>
+  <a href="index.html#quienes-somos" onclick="closeMenu()">Quiénes Somos</a>
+  <a href="garantia.html" onclick="closeMenu()">Garantía</a>
+  <a href="calibracion.html" onclick="closeMenu()">Calibración</a>
+  <a href="index.html#contacto" onclick="closeMenu()">Contacto</a>
+</div>
+  <a href="https://wa.me/5491140591621" class="whatsapp-fixed" target="_blank" aria-label="WhatsApp"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
+
+  <div class="page-hero">
+    <p class="section-tag">// Compromiso escrito con cada cliente</p>
+    <h1>POLÍTICAS<br>DE <span>GARANTÍA</span></h1>
+    <p>Todos nuestros equipos salen testeados y con respaldo real. Acá te explicamos exactamente qué cubre y cómo funciona.</p>
+  </div>
+
+  <div class="gar-wrap">
+
+    <div class="gar-highlight reveal">
+      <span class="big">40</span>
+      <p>días de garantía escrita contra defectos de fabricación — en todos nuestros modelos</p>
+    </div>
+
+    <div class="gar-section reveal">
+      <h2><span class="gar-num">01</span> Garantía</h2>
+      <div class="gar-cards">
+        <div class="gar-card">
+          <h3>Alcance</h3>
+          <p>Todos nuestros equipos (150 kg, 300 kg, 500 kg y 600 kg) cuentan con <strong>40 días</strong> de garantía contra defectos de fabricación. Cada unidad es inspeccionada y testeada técnicamente antes de ser entregada o despachada.</p>
+        </div>
+        <div class="gar-card">
+          <h3>Cobertura</h3>
+          <ul>
+            <li>Sensor de carga</li>
+            <li>Placa lógica</li>
+            <li>Visor digital</li>
+          </ul>
+          <h3 style="margin-top:1rem">Exclusiones</h3>
+          <ul>
+            <li>Daños por maltrato físico</li>
+            <li>Sobrecarga evidente de peso</li>
+            <li>Exposición a líquidos</li>
+            <li>Alteraciones en el cableado por el usuario</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="gar-section reveal">
+      <h2><span class="gar-num">02</span> Política de Cambio</h2>
+      <div class="gar-cards">
+        <div class="gar-card">
+          <h3>Plazo de solicitud</h3>
+          <p>El cliente dispone de <strong>10 días corridos</strong> desde la recepción del producto para solicitar un cambio si el equipo no cumple las especificaciones técnicas prometidas.</p>
+          <p style="margin-top:0.75rem">Las devoluciones aplican en caso de haber realizado ya un cambio de unidad y la nueva presenta defectos de fábrica.</p>
+        </div>
+        <div class="gar-card">
+          <h3>Condición para el cambio</h3>
+          <p>El producto debe ser devuelto <strong>completo</strong>:</p>
+          <ul>
+            <li>Estructura de la balanza</li>
+            <li>Cargador original</li>
+            <li>Tablero digital</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="gar-section reveal">
+      <h2><span class="gar-num">03</span> Logística de Cambios</h2>
+      <div class="gar-cards">
+        <div class="gar-card">
+          <h3>CABA y GBA</h3>
+          <p>Los cambios se gestionan de forma inmediata en nuestro punto de retiro en <strong>Caballito</strong>. Coordinamos la visita por WhatsApp una vez confirmado el caso.</p>
+        </div>
+        <div class="gar-card">
+          <h3>Interior del País</h3>
+          <p>En caso de fallas de fabricación, los costos de envío para el reemplazo corren por cuenta del comprador via <strong>Vía Cargo, Andreani o Correo Argentino</strong>.</p>
+          <p style="margin-top:0.75rem">Tu inversión siempre está protegida — te acompañamos hasta resolver el caso.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-section reveal">
+      <p class="section-tag">// Preguntas frecuentes</p>
+      <h2 class="section-title">FAQ Garantía</h2>
+      <div style="margin-top:1.5rem">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>¿Qué pasa si mi balanza llega con un defecto?</span><div class="faq-toggle">+</div></div>
+          <div class="faq-a"><p class="faq-a-inner">Escribinos por WhatsApp con una foto o video del defecto y coordinamos el cambio inmediatamente. Tenemos stock disponible para reemplazo rápido en CABA y GBA.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>¿La garantía cubre si la balanza se descalibra?</span><div class="faq-toggle">+</div></div>
+          <div class="faq-a"><p class="faq-a-inner">La descalibración no es un defecto de fábrica — puede ocurrir con el uso o el traslado. Por eso te damos una guía de calibración exclusiva para que la ajustés vos mismo. Si tenés dudas, te asistimos por WhatsApp sin costo.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>¿Puedo reclamar la garantía si la dañé por sobrecarga?</span><div class="faq-toggle">+</div></div>
+          <div class="faq-a"><p class="faq-a-inner">No. Los daños causados por sobrecarga evidente, maltrato físico o modificaciones no están cubiertos. Cada modelo tiene una capacidad máxima que no debe superarse para mantener la garantía vigente.</p></div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q"><span>¿Cómo activo la garantía?</span><div class="faq-toggle">+</div></div>
+          <div class="faq-a"><p class="faq-a-inner">Con el comprobante de compra (transferencia, MP o factura) y la fecha de entrega o despacho. Guardá tu comprobante — es tu respaldo.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gar-cta reveal">
+      <h3>¿Tenés una consulta?</h3>
+      <p>Si tenés dudas sobre la garantía de tu equipo o querés iniciar un reclamo, escribinos por WhatsApp.</p>
+      <a href="https://wa.me/5491140591621?text=Hola%2C%20quer%C3%ADa%20consultar%20sobre%20la%20garant%C3%ADa%20de%20mi%20balanza." class="btn-primary" target="_blank">Consultar por WhatsApp</a>
+    </div>
+  </div>
+
+  <footer>
+  <div class="footer-logo">TECNOFAN<span>.</span></div>
+  <ul class="footer-links">
+    <li><a href="index.html#catalogo">Catálogo</a></li>
+    <li><a href="calibracion.html">Calibración</a></li>
+    <li><a href="garantia.html">Garantía</a></li>
+    <li><a href="index.html#quienes-somos">Quiénes Somos</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 TecnoFanCaballito. Todos los derechos reservados.</p>
+</footer>
+  <script>
+    function toggleFaq(el) {
+      const isOpen = el.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) el.classList.add('open');
+    }
+    
+  function openMenu() { document.getElementById('mobileMenu').classList.add('open'); }
+  function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  </script>
+</body>
+</html>

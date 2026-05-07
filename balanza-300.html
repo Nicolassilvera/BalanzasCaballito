@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báscula Industrial 300 kg – TecnoFan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0a0a0a; --dark: #111214; --panel: #161819; --border: #2a2d30;
+  --accent: #f5a800; --accent2: #ff6b1a; --white: #f0ede8; --muted: #8a8f96;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--black); color: var(--white); font-family: var(--font-body); overflow-x: hidden; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2.5rem;
+  background: rgba(10,10,10,0.94); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 3px; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.78rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+.nav-cta { background: var(--accent); color: var(--black) !important; padding: 0.5rem 1.2rem; font-weight: 700 !important; border-radius: 2px; }
+.nav-cta:hover { background: var(--accent2) !important; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.3s; }
+.mobile-menu { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.98); z-index: 99; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 3px; color: var(--white); text-decoration: none; transition: color 0.2s; }
+.mobile-menu a:hover { color: var(--accent); }
+.close-btn { position: absolute; top: 1.5rem; right: 2rem; background: none; border: none; color: var(--white); font-size: 2rem; cursor: pointer; font-family: var(--font-mono); }
+
+/* FOOTER */
+footer { background: var(--black); border-top: 1px solid var(--border); padding: 3rem 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+.footer-logo { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 3px; }
+.footer-logo span { color: var(--accent); }
+.footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; }
+.footer-links { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
+.footer-links a { font-size: 0.75rem; color: var(--muted); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent); }
+
+/* COMMON */
+.section-tag { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 0.75rem; }
+.section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; letter-spacing: 1px; margin-bottom: 1rem; }
+.section-desc { color: var(--muted); max-width: 520px; line-height: 1.7; font-size: 0.95rem; }
+.btn-primary { background: var(--accent); color: var(--black); font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.9rem 2.2rem; text-decoration: none; border-radius: 2px; transition: background 0.2s, transform 0.15s; display: inline-block; }
+.btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+.btn-outline { border: 1px solid var(--border); color: var(--white); font-weight: 500; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; padding: 0.9rem 2.2rem; text-decoration: none; border-radius: 2px; transition: border-color 0.2s, transform 0.15s; display: inline-block; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+.btn-mp { background: #009ee3; color: #fff; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; padding: 0.9rem 2.2rem; text-decoration: none; border-radius: 2px; transition: opacity 0.2s, transform 0.15s; display: flex; align-items: center; justify-content: center; gap: 0.6rem; }
+.btn-mp:hover { opacity: 0.88; transform: translateY(-2px); }
+.whatsapp-fixed { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 200; background: #25d366; color: #fff; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: transform 0.2s; text-decoration: none; }
+.whatsapp-fixed:hover { transform: scale(1.1); }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:none; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+/* FAQ */
+.faq-item { cursor: pointer; overflow: hidden; border-bottom: 1px solid var(--border); }
+.faq-q { padding: 1.4rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.faq-q span { font-weight: 600; font-size: 0.9rem; flex: 1; }
+.faq-toggle { color: var(--accent); font-size: 1.3rem; font-family: var(--font-mono); transition: transform 0.3s; flex-shrink: 0; }
+.faq-item.open .faq-toggle { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
+.faq-a-inner { padding: 0 0 1.4rem; font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+.faq-item.open .faq-a { max-height: 400px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) { .nav-links { display: none; } .hamburger { display: flex; } }
+@media (max-width: 600px) { nav { padding: 1rem 1.2rem; } footer { flex-direction: column; text-align: center; } .footer-links { justify-content: center; } }
+
+    /* ── PRODUCT PAGE ── */
+    .prod-hero { padding-top: 100px; background: var(--dark); }
+    .prod-inner { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .prod-img-wrap { position: relative; background: #1a1c1f; border: 1px solid var(--border); overflow: hidden; }
+    .prod-img-wrap img { width: 100%; aspect-ratio: 1; object-fit: contain; padding: 1.5rem; }
+    .prod-badge { position: absolute; top: 1rem; left: 1rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 2px; background: rgba(255,107,26,0.15); color: #ff6b1a; border: 1px solid #ff6b1a40; padding: 0.3rem 0.7rem; }
+    .prod-breadcrumb { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 2px; margin-bottom: 1.2rem; }
+    .prod-breadcrumb a { color: var(--muted); text-decoration: none; } .prod-breadcrumb a:hover { color: var(--accent); }
+    .prod-title { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5rem); line-height: 0.95; letter-spacing: 1px; margin-bottom: 1rem; }
+    .prod-title span { color: #ff6b1a; }
+    .prod-price { font-family: var(--font-display); font-size: 3rem; color: #ff6b1a; margin: 1.5rem 0; line-height: 1; }
+    .prod-price small { font-size: 1.2rem; color: var(--muted); font-family: var(--font-body); font-weight: 400; }
+    .prod-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 2rem 0; }
+    .spec-cell { background: var(--panel); padding: 1rem 1.2rem; }
+    .spec-k { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.2rem; }
+    .spec-v { font-size: 0.95rem; font-weight: 600; }
+    .prod-features { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0 2rem; }
+    .prod-features li { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.88rem; line-height: 1.5; }
+    .prod-features li::before { content: '✓'; color: #ff6b1a; font-family: var(--font-mono); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .prod-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+    .btn-wa { background: #25d366; color: #fff; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; padding: 1rem 2rem; text-decoration: none; border-radius: 2px; display: flex; align-items: center; justify-content: center; gap: 0.6rem; transition: opacity 0.2s, transform 0.15s; }
+    .btn-wa:hover { opacity: 0.9; transform: translateY(-2px); }
+    /* ── COMMENT ZONE ── */
+    /* 🖼️ FOTO: Reemplazá el src del <img> dentro de .prod-img-wrap con tu foto real del producto */
+    /* 💲 PRECIO: Cambiá el texto dentro de .prod-price */
+    /* 🛒 MERCADOPAGO: Reemplazá href="#MERCADOPAGO-LINK" con tu link real de MP */
+    /* 📱 WHATSAPP: El número está en href de btn-wa — actualizalo si cambia */
+    .prod-guarantee { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; }
+    .prod-guarantee span { color: #ff6b1a; font-size: 1rem; }
+
+    /* ── DESCRIPTION ── */
+    .prod-desc { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+    .prod-desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
+    .feature-card { background: var(--panel); border: 1px solid var(--border); padding: 1.8rem; border-left: 3px solid #ff6b1a; }
+    .feature-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .feature-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── FAQ ── */
+    .prod-faq { background: var(--panel); padding: 4rem 2rem; }
+    .prod-faq-inner { max-width: 1100px; margin: 0 auto; }
+    .prod-faq-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4rem; margin-top: 2rem; }
+
+    /* ── ALSO LIKE ── */
+    .also-like { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+    .also-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; background: var(--border); border: 1px solid var(--border); margin-top: 2rem; }
+    .also-card { background: var(--panel); padding: 1.8rem; text-decoration: none; color: var(--white); transition: background 0.2s; display: block; }
+    .also-card:hover { background: #1c1e20; }
+    .also-card h3 { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .also-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 1rem; }
+    .also-card .also-price { font-family: var(--font-mono); color: var(--accent); font-size: 1rem; }
+
+    @media (max-width:900px) {
+      .prod-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .prod-desc-grid { grid-template-columns: 1fr; }
+      .prod-faq-cols { grid-template-columns: 1fr; }
+      .also-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width:600px) { .prod-inner { padding: 2rem 1.2rem 3rem; } .prod-desc, .prod-faq, .also-like { padding: 3rem 1.2rem; } }
+
+    /* --- Estilos del Carrusel de Producto --- */
+.carousel-container {
+    position: relative;
+    overflow: hidden; /* Oculta las fotos que no están activas */
+    background: #000;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Botones de navegación */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(245, 168, 0, 0.2); /* Tu color accent con transparencia */
+    border: 1px solid var(--border);
+    color: var(--accent);
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    z-index: 10;
+    transition: 0.3s;
+}
+
+.carousel-control:hover {
+    background: var(--accent);
+    color: #000;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+  </style>
+</head>
+<body>
+  <nav>
+  <a href="index.html" class="nav-logo">BALANZAS<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#catalogo">Catálogo</a></li>
+    <li><a href="index.html#quienes-somos">Quiénes Somos</a></li>
+    <li><a href="garantia.html">Garantía</a></li>
+    <li><a href="calibracion.html">Calibración</a></li>
+    <li><a href="index.html#contacto" class="nav-cta">Consultar</a></li>
+  </ul>
+  <button class="hamburger" onclick="openMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-btn" onclick="closeMenu()">✕</button>
+  <a href="index.html" onclick="closeMenu()">Inicio</a>
+  <a href="index.html#catalogo" onclick="closeMenu()">Catálogo</a>
+  <a href="index.html#quienes-somos" onclick="closeMenu()">Quiénes Somos</a>
+  <a href="garantia.html" onclick="closeMenu()">Garantía</a>
+  <a href="calibracion.html" onclick="closeMenu()">Calibración</a>
+  <a href="index.html#contacto" onclick="closeMenu()">Contacto</a>
+</div>
+  <a href="https://wa.me/5491140591621" class="whatsapp-fixed" target="_blank" aria-label="WhatsApp"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
+
+  <div class="prod-hero">
+    <div class="prod-inner">
+      <!-- 🖼️ FOTO: Reemplazá la imagen src por tu foto real del producto si tenés una mejor -->
+      <div class="prod-img-wrap carousel-container">
+    
+        <div class="carousel-track" id="track150">
+          <!-- Foto 1 -->
+          <div class="carousel-slide">
+            <img src="assets/img/Balanza 150/Diseño sin título (2).png" alt="Balanza 150kg vista frontal" loading="lazy" />
+          </div>
+          <!-- Foto 2 -->
+          <div class="carousel-slide">
+            <img src="assets/img/Balanza 300/60da8dba-4c2e-4f67-b5fe-ef863a2e9815.jpeg" alt="Balanza 150kg detalle visor" loading="lazy" />
+          </div>
+          <!-- Foto 3 -->
+          <div class="carousel-slide">
+            <img src="assets/img/Balanza 300/upscalemedia-transformed (1).jpeg" alt="Balanza 150kg detalle base" loading="lazy" />
+          </div>
+          <!-- Foto 4 -->
+          <div class="carousel-slide">
+            <img src="assets/img/Balanza 300/16613a23-e73a-444a-85e4-6b51f97be5f1.jpeg" alt="Balanza 150kg detalle base" loading="lazy" />
+          </div>
+          <!-- Foto 4 -->
+          <div class="carousel-slide">
+            <img src="assets/img/Balanza 300/Gemini_Generated_Image_tnsmu3tnsmu3tnsm (1).png" alt="Balanza 150kg detalle base" loading="lazy" />
+          </div>
+        </div>
+
+        <!-- Controles -->
+        <button class="carousel-control prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="carousel-control next" onclick="moveSlide(1)">&#10095;</button>
+      </div>
+      <div class="prod-info">
+        <p class="prod-breadcrumb"><a href="index.html">Inicio</a> / <a href="index.html#catalogo">Catálogo</a> / Báscula 300 kg</p>
+        <h1 class="prod-title">BÁSCULA<br><span>300 KG</span></h1>
+        <div class="prod-specs">
+          <div class="spec-cell"><span class="spec-k">Capacidad</span><span class="spec-v">300 kg (máx 350 por sensor)</span></div>
+          <div class="spec-cell"><span class="spec-k">Plataforma</span><span class="spec-v">50×40 cm — Acero reforzado</span></div>
+          <div class="spec-cell"><span class="spec-k">Batería</span><span class="spec-v">12 – 16 hs · 220v directo</span></div>
+          <div class="spec-cell"><span class="spec-k">Precisión</span><span class="spec-v">5 gramos</span></div>
+          <div class="spec-cell"><span class="spec-k">Funciones</span><span class="spec-v">TARE · ZERO · ADD · Precio</span></div>
+          <div class="spec-cell"><span class="spec-k">Garantía</span><span class="spec-v">40 días escrita</span></div>
+        </div>
+        <!-- 💲 PRECIO: Actualizá el precio aquí -->
+        <div class="prod-price">$145.000 <small>ARS</small></div>
+        <ul class="prod-features">
+          <li>Estructura de acero reforzado para uso industrial intensivo</li>
+          <li>Display LED de alta visibilidad: Peso, Precio Unitario y Total</li>
+          <li>Batería de larga duración + carga directa a 220v</li>
+          <li>Guía de calibración exclusiva para clientes</li>
+          <li>Repuestos de cargadores disponibles en stock</li>
+        </ul>
+        <div class="prod-actions">
+          <!-- 📱 WHATSAPP: Consultá stock y coordiná retiro/envío -->
+          <a href="https://wa.me/5491140591621?text=Hola%20buenas%2C%20quer%C3%ADa%20consultar%20stock%20de%20la%20Balanza%20300kg%20y%20coordinar%20retiro%20o%20env%C3%ADo." class="btn-wa" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            Consultar stock y coordinar retiro
+          </a>
+          <!-- 🛒 MERCADOPAGO: Reemplazá href="#MERCADOPAGO-LINK" con tu link real de pago -->
+          <a href="#MERCADOPAGO-LINK" class="btn-mp" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="11" stroke="white" stroke-width="1.5" fill="none"/><path d="M7 12h10M12 7l5 5-5 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Reservá la tuya directamente
+          </a>
+        </div>
+        <p class="prod-guarantee"><span>🛡️</span> Garantía escrita por 40 días + soporte post-venta</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="prod-desc">
+    <p class="section-tag reveal">// Detalle del producto</p>
+    <h2 class="section-title reveal">Por qué elegir<br>la 300 kg</h2>
+    <div class="prod-desc-grid">
+      <div class="feature-card reveal">
+        <h3>Estructura Reforzada</h3>
+        <p>Se banca el uso pesado en depósitos, comercios o logística. Plataforma antideslizante de 50×40 cm en acero tratado.</p>
+      </div>
+      <div class="feature-card reveal">
+        <h3>Batería de Larga Duración</h3>
+        <p>Entre 12 y 16 hs de autonomía real. Carga directa a 220v. Tenemos repuestos de cargadores disponibles siempre.</p>
+      </div>
+      <div class="feature-card reveal">
+        <h3>Visor LED de Alta Visibilidad</h3>
+        <p>Pantallas claras con función de Peso, Precio Unitario y Total. Ideal para trabajo rápido en ritmo de depósito.</p>
+      </div>
+      <div class="feature-card reveal">
+        <h3>Soporte Técnico Incluido</h3>
+        <p>Guía de calibración exclusiva para clientes. Si se descalibra la ajustás vos mismo con nuestro instructivo paso a paso.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="prod-faq">
+    <div class="prod-faq-inner">
+      <p class="section-tag reveal">// Preguntas frecuentes</p>
+      <h2 class="section-title reveal">FAQ</h2>
+      <div class="prod-faq-cols">
+        <div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>¿Tienen local a la calle?</span><div class="faq-toggle">+</div></div>
+            <div class="faq-a"><p class="faq-a-inner">Somos oficina comercial con atención personalizada y punto de retiro en Caballito. Por seguridad, coordinamos las visitas previamente una vez confirmada la intención de compra por WhatsApp.</p></div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>¿Cuáles son los medios de pago?</span><div class="faq-toggle">+</div></div>
+            <div class="faq-a"><p class="faq-a-inner">Efectivo al momento del retiro, transferencia bancaria y Mercado Pago. Consultá por cuotas con tarjeta de crédito.</p></div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>¿Realizan envíos a domicilio?</span><div class="faq-toggle">+</div></div>
+            <div class="faq-a"><p class="faq-a-inner"><strong>CABA y GBA:</strong> Envíos con logística propia, pago contra entrega. Recibís la balanza y la abonás en el momento.<br><br><strong>Resto del país:</strong> Vía Cargo, Andreani o Correo Argentino, una vez acreditado el pago. Te enviamos el tracking por WhatsApp al despachar.</p></div>
+          </div>
+        </div>
+        <div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>¿La balanza tiene garantía?</span><div class="faq-toggle">+</div></div>
+            <div class="faq-a"><p class="faq-a-inner">Sí, 40 días de garantía escrita contra defectos de fabricación. Contamos con soporte técnico propio para cualquier consulta post-venta.</p></div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>¿Cómo calibro mi balanza?</span><div class="faq-toggle">+</div></div>
+            <div class="faq-a"><p class="faq-a-inner">Tenemos una guía de calibración exclusiva para nuestros clientes. Es simple y la podés hacer vos mismo. Descargala desde la sección <a href="calibracion.html" style="color:var(--accent)">Calibración</a>.</p></div>
+          </div>
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>¿Tienen repuestos?</span><div class="faq-toggle">+</div></div>
+            <div class="faq-a"><p class="faq-a-inner">Sí. Tenemos stock de transformadores 6v a 220v y enchufes directos a 220v para todos los modelos.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="also-like">
+    <p class="section-tag reveal">// También te puede interesar</p>
+    <h2 class="section-title reveal">Otros modelos</h2>
+    <div class="also-grid">
+      <a href="balanza-150.html" class="also-card reveal">
+        <h3>150 KG</h3>
+        <p>Plataforma 40×30 cm — Ideal para comercios y depósitos medianos</p>
+        <span class="also-price">$ 100.000 ARS</span>
+      </a>
+      <a href="balanza-500.html" class="also-card reveal">
+        <h3>500 KG</h3>
+        <p>Plataforma 55×45 cm — Máxima capacidad para cargas pesadas</p>
+        <span class="also-price">$ 220.000 ARS</span>
+      </a>
+      <a href="balanza-600.html" class="also-card reveal">
+        <h3>600 KG</h3>
+        <p>Plataforma 60×50 cm — Máxima capacidad para cargas pesadas</p>
+        <span class="also-price">$ 240.000 ARS</span>
+      </a>
+    </div>
+  </div>s
+
+  <footer>
+  <div class="footer-logo">BalanzasCaballito<span>.</span></div>
+  <ul class="footer-links">
+    <li><a href="index.html#catalogo">Catálogo</a></li>
+    <li><a href="calibracion.html">Calibración</a></li>
+    <li><a href="garantia.html">Garantía</a></li>
+    <li><a href="index.html#quienes-somos">Quiénes Somos</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 BalanzasCaballito. Todos los derechos reservados.</p>
+</footer>
+  <script>
+    function toggleFaq(el) {
+      const isOpen = el.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) el.classList.add('open');
+    }
+    
+  function openMenu() { document.getElementById('mobileMenu').classList.add('open'); }
+  function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+
+    let currentIndex = 0;
+
+    function moveSlide(direction) {
+        const track = document.getElementById('track150');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+
+        currentIndex += direction;
+
+        // Bucle infinito
+        if (currentIndex >= totalSlides) {
+            currentIndex = 0;
+        } else if (currentIndex < 0) {
+            currentIndex = totalSlides - 1;
+        }
+
+        const offset = currentIndex * -100;
+        track.style.transform = `translateX(${offset}%)`;
+    }
+
+  
+  </script>
+</body>
+</html>
