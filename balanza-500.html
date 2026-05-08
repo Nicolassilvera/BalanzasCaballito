@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Báscula Industrial 500 kg – TecnoFan</title>
+  <title>Báscula Industrial 500 kg – BalanzasCaballito</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     
@@ -189,6 +189,25 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
 .prev { left: 10px; }
 .next { right: 10px; }
 
+.legal-links {
+    font-size: 0.85em; /* Un poquito más chico que el resto */
+    margin-left: 5px;
+    opacity: 0.8;
+}
+
+.legal-link {
+    color: inherit; /* Toma el color del texto del párrafo */
+    text-decoration: underline;
+    transition: opacity 0.3s;
+}
+
+.legal-link:hover {
+    opacity: 1;
+    color: #007bff; /* O el color principal de TecnoFan */
+}
+
+
+
   </style>
 </head>
 <body>
@@ -256,7 +275,7 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
           <div class="spec-cell"><span class="spec-k">Garantía</span><span class="spec-v">40 días escrita</span></div>
         </div>
         <!-- 💲 PRECIO: Actualizá el precio aquí -->
-        <div class="prod-price">$215.000 <small>ARS</small></div>
+        <div class="prod-price">$220.000 <small>ARS (Efectivo)RS</small></div>
         <ul class="prod-features">
           <li>Estructura de acero reforzado para uso industrial intensivo</li>
           <li>Display LED de alta visibilidad: Peso, Precio Unitario y Total</li>
@@ -276,7 +295,13 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
             Reservá la tuya directamente
           </a>
         </div>
-        <p class="prod-guarantee"><span>🛡️</span> Garantía escrita por 40 días + soporte post-venta</p>
+        <p class="prod-guarantee">
+          <span>🛡️</span> Garantía escrita por 40 días + soporte post-venta 
+          <span class="legal-links">
+            <a href="privacidad.html" class="legal-link">Politicas de Privacidad</a> y
+            <a href="terminos.html" class="legal-link">Términos</a>  
+          </span>
+        </p>      
       </div>
     </div>
   </div>
@@ -312,7 +337,7 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
         <div>
           <div class="faq-item" onclick="toggleFaq(this)">
             <div class="faq-q"><span>¿Tienen local a la calle?</span><div class="faq-toggle">+</div></div>
-            <div class="faq-a"><p class="faq-a-inner">Somos oficina comercial con atención personalizada y punto de retiro en Caballito. Por seguridad, coordinamos las visitas previamente una vez confirmada la intención de compra por WhatsApp.</p></div>
+            <div class="faq-a"><p class="faq-a-inner">Somos oficina comercial con atención personalizada y punto de retiro en Caballito. Por seguridad, coordinamos las visitas previamente una vez confirmada la intención de compra por <a href="orden-compra (1).html" class="faq-link" style="color:var(--accent)">WhatsApp</a>..</p></div>
           </div>
           <div class="faq-item" onclick="toggleFaq(this)">
             <div class="faq-q"><span>¿Cuáles son los medios de pago?</span><div class="faq-toggle">+</div></div>
@@ -353,12 +378,12 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
       <a href="balanza-300.html" class="also-card reveal">
         <h3>300 KG</h3>
         <p>Plataforma 50×40 cm — El más elegido por logística y metaleras</p>
-        <span class="also-price">$ 145.000 ARS</span>
+        <span class="also-price">$ 140.000 ARS</span>
       </a>
       <a href="balanza-600.html" class="also-card reveal">
         <h3>600 KG</h3>
         <p>Plataforma 60×50 cm — Máxima capacidad para cargas pesadas</p>
-        <span class="also-price">$ 240.000 ARS</span>
+        <span class="also-price">$ 235.000 ARS</span>
       </a>
     </div>
   </div>
@@ -370,6 +395,8 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
     <li><a href="calibracion.html">Calibración</a></li>
     <li><a href="garantia.html">Garantía</a></li>
     <li><a href="index.html#quienes-somos">Quiénes Somos</a></li>
+    <li><a href="privacidad.html" target="_blank">Privacidad</a></li>
+    <li><a href="terminos.html" target="_blank">Terminos</a></li>
   </ul>
   <p class="footer-copy">© 2026 BalanzasCaballito. Todos los derechos reservados.</p>
 </footer>
