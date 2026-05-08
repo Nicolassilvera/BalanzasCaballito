@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Orden de Compra – BalanzasCaballito</title>
+  <title>Orden de Compra – <strong>BalanzasCaballito</strong></title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link rel="icon" type="image/png" href="assets/img/Logo Web.png">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -242,6 +243,26 @@
       .wrap{padding:90px 1rem 4rem}
       nav{padding:.9rem 1.2rem}
     }
+
+/* Forzamos a que el logo mantenga su color original siempre */
+.nav-logo, 
+.nav-logo:visited, 
+.nav-logo:active {
+    color: white !important; /* O el color principal de tu texto */
+    text-decoration: none;
+}
+
+/* Si querés que el punto final siga siendo del color de acento */
+.nav-logo span {
+    color: var(--accent);
+}
+
+/* Opcional: un efecto sutil cuando pasás el mouse */
+.nav-logo:hover {
+    opacity: 0.8;
+    color: white;
+}
+
   </style>
 </head>
 <body>
@@ -249,8 +270,14 @@
 <div class="bg"></div>
 
 <nav>
-  <a href="index.html" class="logo">BALANZAS<span>.</span></a>
-  <a href="javascript:history.back()" class="back">&#8592; Volver</a>
+
+<a href="index.html" class="nav-logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+  <img src="assets/img/Logo Web.png" alt="Logo" style="max-width: 40px; height: auto; border-radius: 50%; display: block;">
+  
+  <span><strong>BalanzasCaballito</strong><span style="color:var(--accent)">.</span></span>
+</a>
+
+  <a href="javascript:history.back()" class="back" style="color:var(--accent)">&#8592; Volver</a>
 </nav>
 
 <a href="https://wa.me/5491140591621" class="waf" target="_blank" aria-label="WhatsApp" rel="noopener">

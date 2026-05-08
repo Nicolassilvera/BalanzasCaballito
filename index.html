@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Balanzas Industriales – BalanzasCaballito</title>
+  <title>Balanzas Industriales – <strong>BalanzasCaballito</strong></title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/img/Logo Web.png">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1006,7 +1007,13 @@
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">BalanzasCaballito<span>.</span></a>
+
+<a href="index.html" class="nav-logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+  <img src="assets/img/Logo Web.png" alt="Logo" style="max-width: 40px; height: auto; border-radius: 50%; display: block;">
+  
+  <span><strong>BalanzasCaballito</strong><span style="color: var(--accent);">.</span></span>
+</a>
+
   <ul class="nav-links">
     <li><a href="#catalogo">Catálogo</a></li>
     <li><a href="#quienes-somos">Quiénes Somos</a></li>
@@ -1346,7 +1353,7 @@
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-q">
         <span>¿Tienen garantía?</span>
-        <div class="faq-toggle">+</div>
+        <div class="faq-toggle">+</div> 
       </div>
       <div class="faq-a">
         <p class="faq-a-inner">Sí. Todos nuestros equipos cuentan con garantía. Consultá nuestra sección de Políticas de Garantía o escribinos directamente para más detalles según el modelo.</p>
@@ -1364,9 +1371,15 @@
     <!-- Texto informativo -->
     <div>
       <p class="section-tag reveal">// 04 — Quiénes somos</p>
-      <h2 class="section-title reveal">BalanzasCaballito<br><span style="color:var(--accent)">Caballito</span></h2>
-      <p class="section-desc reveal" style="margin-bottom:1.5rem">Somos una oficina comercial especializada en equipos de pesaje industrial. Operamos desde Caballito, Buenos Aires, con atención personalizada y envíos a todo el país.</p>
-      <p class="section-desc reveal" style="margin-bottom:2rem">Elegimos balanzas reforzadas con autonomía real y calibración accesible — herramientas para los que laburan en serio.</p>
+
+      <div class="reveal" style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+        <img src="assets/img/Logo Web.png" alt="Logo Balanzas Caballito" style="max-width: 120px; height: auto; border-radius: 50%;">
+        <img src="assets/img/Logo Tecnofan.png" alt="Logo TecnoFan" style="max-width: 215px; height: auto; border-radius: 50%; padding-top: 15px">
+      </div>
+
+      <h2 class="section-title reveal"><strong>BalanzasCaballito</strong><br><span style="color:var(--accent)"> Caballito - </span> TecnoFan</h2>
+      <p class="section-desc reveal" style="margin-bottom:1.5rem">Nacimos con <strong>TecnoFan</strong>, nuestra base en el mundo de la electrónica mayorista, consolas y TV boxes. Hoy, esa misma trayectoria en tecnología la volcamos en <strong>BalanzasCaballito</strong>, especializándonos en equipos de pesaje industrial.
+      Sabemos lo que es el laburo diario: por eso seleccionamos balanzas reforzadas y con autonomía real. Combinamos nuestra experiencia en electrónica con herramientas de alta resistencia para que tu negocio avance con precisión absoluta. Soporte técnico directo, respaldo de marca y envíos a todo el país.</p>
       <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
         <a href="#contacto" class="btn-primary reveal">Contactarnos</a>
         <a href="garantia.html" class="btn-outline reveal">Ver garantía</a>
@@ -1614,7 +1627,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">BalanzasCaballito<span>.</span></div>
+  <div class="footer-logo"><strong>BalanzasCaballito</strong><span>.</span></div>
   <ul class="footer-links">
     <li><a href="#catalogo">Catálogo</a></li>
     <li><a href="calibracion.html" target="_blank">Calibración</a></li>
@@ -1623,7 +1636,7 @@
     <li><a href="privacidad.html" target="_blank">Privacidad</a></li>
     <li><a href="terminos.html" target="_blank">Terminos</a></li>
   </ul>
-  <p class="footer-copy">© 2026 BalanzasCaballito. Todos los derechos reservados.</p>
+  <p class="footer-copy">© 2026 <strong>BalanzasCaballito</strong>. Todos los derechos reservados.</p>
 </footer>
 
 <script>
