@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Balanzas Industriales – <strong>BalanzasCaballito</strong></title>
+  <title>Balanzas Industriales – BalanzasCaballito</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
@@ -1001,9 +1001,36 @@
 }
 
 @media (max-width: 900px) { #quienes-somos > div { grid-template-columns: 1fr !important; gap: 2.5rem !important; } }
+
+ .floating-reserva{
+      position:fixed;
+      bottom:20px;
+      right:35px;
+      background:#ff6b00;
+      color:#fff;
+      padding:14px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:700;
+      z-index:9999;
+      box-shadow:0 8px 25px rgba(0,0,0,.25);
+      transition:.3s;
+    }
+
+    .floating-reserva:hover{
+      transform:translateY(-3px);
+    }
 </style>
 </head>
 <body>
+
+<!-- BOTON FLOTANTE -->
+  <a href="https://wa.me/5491140591621?text=Hola,%20quiero%20reservar%20una%20balanza"
+     class="floating-reserva"
+     target="_blank"
+     rel="noopener">
+     Reservar Balanza YA
+  </a>
 
 <!-- NAV -->
 <nav>
@@ -1050,10 +1077,12 @@
   <p class="hero-sub">
     Balanzas digitales de alto rendimiento para el control total de su stock. Robustez real para el trabajo pesado — hasta 500 kg de capacidad.
   </p>
+
   <div class="hero-actions">
     <a href="#catalogo" class="btn-primary">Ver Catálogo</a>
-    <a href="https://wa.me/5491140591021" class="btn-outline" target="_blank" rel="noopener">WhatsApp Directo</a>
+    <a href="https://wa.me/5491140591621?text=Hola%20buenas,%20estoy%20interesado%20en%20comprar%20una%20balanza.%20Quisiera%20recibir%20asesoramiento%20y%20precios." class="btn-outline" target="_blank" rel="noopener">WhatsApp Directo</a>
   </div>
+
 </section>
 
 <!-- STATS BAR -->
