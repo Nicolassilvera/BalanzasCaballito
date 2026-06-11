@@ -430,7 +430,7 @@ Nuestro equipo verificará los datos y continuará con la atención para coordin
     <div class="sub" id="sb-retiro">
       <div class="abox">
         <span class="atitle">Punto de retiro</span>
-        <strong>Juan B. Alberdi 326, Caballito, CABA.</strong> Coordinamos dia y horario por WhatsApp una vez confirmada la orden.
+        <strong>Acoyte 236, Caballito, CABA.</strong> Coordinamos dia y horario por WhatsApp una vez confirmada la orden.
       </div>
     </div>
 
@@ -766,7 +766,7 @@ function buildTkt(){
 
   var ek='Entrega',ev='',sf=false;
   if(del==='retiro'){
-    ev='Retiro — Juan B. Alberdi 326, Caballito';
+    ev='Retiro — Acoyte 236, Caballito';
   } else if(zona==='caba'){
     ev='CABA — '+document.getElementById('dirE').value+' (contra entrega)'; sf=true;
   } else if(zona==='gba'){
@@ -795,7 +795,7 @@ function buildTkt(){
   ids.forEach(function(id){ m+=sel[id]+'x '+PRODS[id].name+' ('+PRODS[id].plat+')\n'; });
   m+='\n';
   if(del==='retiro'){
-    m+='Retira: Juan B. Alberdi 326, Caballito\n';
+    m+='Retira: Acoyte 236, Caballito\n';
   } else if(zona==='caba'){
     m+='Envio CABA contra entrega: '+document.getElementById('dirE').value+'\n';
     m+='Fecha programada: '+(fecha||'-')+'\n';
