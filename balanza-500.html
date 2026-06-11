@@ -143,8 +143,9 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
 /* --- Estilos del Carrusel de Producto --- */
 .carousel-container {
     position: relative;
-    overflow: hidden; /* Oculta las fotos que no están activas */
+    overflow: hidden;
     background: #000;
+    transition: height 0.4s ease;
 }
 
 .carousel-track {
@@ -189,6 +190,22 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
     background: var(--accent);
     transform: scale(1.35);
 }
+#lb {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.97); z-index: 9999;
+    align-items: center; justify-content: center;
+}
+#lb-x {
+    position: absolute; top: 1rem; right: 1.2rem;
+    background: none; border: none; color: #fff;
+    font-size: 2.5rem; cursor: pointer; line-height: 1; padding: 0;
+}
+#lb-wrap {
+    width: 100%; height: 100%; overflow: auto;
+    display: flex; align-items: center; justify-content: center;
+    -webkit-overflow-scrolling: touch;
+}
+#lb-img { max-width: 100%; max-height: 100vh; object-fit: contain; display: block; }
 
 .legal-links {
     font-size: 0.85em; /* Un poquito más chico que el resto */
@@ -421,33 +438,68 @@ footer { background: var(--black); border-top: 1px solid var(--border); padding:
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-let currentIndex = 0;
+let currentIndex = 0, wasSwiping = false;
 
-function updateDots() {
-  document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-}
-function moveSlide(direction) {
-  const track = document.getElementById('track150');
-  const total = document.querySelectorAll('.carousel-slide').length;
-  currentIndex = (currentIndex + direction + total) % total;
-  track.style.transform = `translateX(${currentIndex * -100}%)`;
-  updateDots();
-}
-function goToSlide(i) {
-  const track = document.getElementById('track150');
-  currentIndex = i;
-  track.style.transform = `translateX(${currentIndex * -100}%)`;
-  updateDots();
-}
 document.addEventListener('DOMContentLoaded', () => {
-  const dots = document.getElementById('carouselDots');
-  document.querySelectorAll('.carousel-slide').forEach((_, i) => {
+  const track     = document.getElementById('track150');
+  const slides    = [...document.querySelectorAll('.carousel-slide')];
+  const container = document.querySelector('.carousel-container');
+  const dotsEl    = document.getElementById('carouselDots');
+
+  function updateDots() {
+    document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+  }
+  function updateHeight() {
+    const img = slides[currentIndex].querySelector('img');
+    const apply = () => { if (img.naturalWidth > 0) container.style.height = Math.round(container.offsetWidth * img.naturalHeight / img.naturalWidth) + 'px'; };
+    img.complete ? apply() : img.addEventListener('load', apply, { once: true });
+  }
+  function goTo(i) {
+    currentIndex = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(${currentIndex * -100}%)`;
+    updateDots(); updateHeight();
+  }
+  window.moveSlide = dir => goTo(currentIndex + dir);
+  window.goToSlide = i  => goTo(i);
+
+  // Dots
+  slides.forEach((_, i) => {
     const b = document.createElement('button');
     b.className = 'carousel-dot' + (i === 0 ? ' active' : '');
     b.setAttribute('aria-label', 'Foto ' + (i + 1));
-    b.onclick = () => goToSlide(i);
-    dots.appendChild(b);
+    b.onclick = () => goTo(i);
+    dotsEl.appendChild(b);
   });
+
+  // Swipe
+  let tx = 0;
+  track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; wasSwiping = false; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) { wasSwiping = true; goTo(currentIndex + (dx < 0 ? 1 : -1)); }
+  }, { passive: true });
+
+  // Lightbox
+  const lb = document.createElement('div');
+  lb.id = 'lb';
+  lb.innerHTML = '<button id="lb-x" type="button">×</button><div id="lb-wrap"><img id="lb-img" alt=""></div>';
+  document.body.appendChild(lb);
+  let lbIdx = 0, ltx = 0;
+  function lbOpen(i) { lbIdx = i; document.getElementById('lb-img').src = slides[i].querySelector('img').src; lb.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  function lbClose() { lb.style.display = 'none'; document.body.style.overflow = ''; }
+  function lbGoTo(i) { lbIdx = (i + slides.length) % slides.length; document.getElementById('lb-img').src = slides[lbIdx].querySelector('img').src; goTo(lbIdx); }
+  document.getElementById('lb-x').addEventListener('click', lbClose);
+  lb.addEventListener('click', e => { if (e.target === lb) lbClose(); });
+  const lbWrap = document.getElementById('lb-wrap');
+  lbWrap.addEventListener('touchstart', e => { ltx = e.touches[0].clientX; }, { passive: true });
+  lbWrap.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - ltx; if (Math.abs(dx) > 40) lbGoTo(lbIdx + (dx < 0 ? 1 : -1)); }, { passive: true });
+  slides.forEach(s => {
+    s.querySelector('img').style.cursor = 'zoom-in';
+    s.addEventListener('click', () => { if (!wasSwiping) lbOpen(currentIndex); });
+  });
+
+  updateHeight();
+  window.addEventListener('resize', updateHeight);
 });
 
   
