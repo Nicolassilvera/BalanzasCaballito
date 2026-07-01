@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://balanzas-caballito.vercel.app/sitemap.xml
