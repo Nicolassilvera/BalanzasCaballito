@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/balanza-600.html",
+      "destination": "/balanza-500.html",
+      "permanent": true
+    },
+    {
+      "source": "/orden-compra(.*)",
+      "destination": "/#catalogo",
+      "permanent": true
+    }
+  ]
+}

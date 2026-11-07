@@ -1,67 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Términos y Condiciones | <strong>BalanzasCaballito</strong></title>
-  <link rel="stylesheet" href="css/styles2.css">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles-privacidad.css">
-  <link rel="shortcut icon" href="assets/img/Logo.png" type="image/x-icon">
-  <link rel="icon" type="image/png" href="assets/img/Logo Web.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Términos y condiciones | BalanzasCaballito</title>
+<meta name="description" content="Términos y condiciones de compra de BalanzasCaballito: precios, reservas sin pago adelantado, entregas en CABA y alrededores, envíos al interior, devoluciones y garantía.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#D9D7D1">
+<link rel="canonical" href="https://balanzas-caballito.vercel.app/terminos.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://balanzas-caballito.vercel.app/terminos.html">
+<meta property="og:title" content="Términos y condiciones | BalanzasCaballito">
+<meta property="og:description" content="Términos y condiciones de compra de BalanzasCaballito: precios, reservas sin pago adelantado, entregas en CABA y alrededores, envíos al interior, devoluciones y garantía.">
+<meta property="og:image" content="https://balanzas-caballito.vercel.app/assets/img/logo.png">
+<meta property="og:locale" content="es_AR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400;500;600;700&family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
-<body style="background: var(--dark);">
+<body class="page-doc">
 
-<nav>
+<button class="floating-reserva" type="button" data-bot="">Reservar Balanza YA</button>
 
-<a href="index.html" class="nav-logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-  <img src="assets/img/Logo Web.png" alt="Logo" style="max-width: 40px; height: auto; border-radius: 50%; display: block;">
-  
-  <span><strong>BalanzasCaballito</strong><span style="color:var(--accent)">.</span></span>
-</a>
+<header class="top">
+  <a class="logo" href="index.html"><img src="assets/img/logo.png" alt="Logo BalanzasCaballito" width="36" height="36"><span>BalanzasCaballito<span class="logo-dot-t">.</span></span></a>
+  <nav class="nav" aria-label="Principal">
+    <a class="nav-l" href="index.html#catalogo">Catálogo</a>
+    <a class="nav-l" href="index.html#compra">Cómo comprar</a>
+    <a class="nav-l" href="index.html#quienes-somos">Quiénes somos</a>
+    <a class="nav-l" href="garantia.html">Garantía</a>
+    <a class="nav-l" href="calibracion.html">Calibración</a>
+    <a class="btn btn--sm" href="https://wa.me/5491140591621?text=Hola%21%20Vengo%20de%20la%20web%2C%20estaba%20buscando%20una%20balanza%20y%20quer%C3%ADa%20hablar%20con%20alguien." target="_blank" rel="noopener">Consultar</a>
+    <button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu" onclick="openMenu()"><span></span><span></span><span></span></button>
+  </nav>
+</header>
 
+<div class="menu" id="menu" hidden>
+  <button class="menu-x" type="button" aria-label="Cerrar menú" onclick="closeMenu()">✕</button>
+  <a href="index.html#catalogo">Catálogo</a>
+  <a href="index.html#compra">Cómo comprar</a>
+  <a href="index.html#quienes-somos">Quiénes somos</a>
+  <a href="garantia.html">Garantía</a>
+  <a href="calibracion.html">Calibración</a>
+  <a href="index.html#contacto">Contacto</a>
+</div>
 
-  <a href="javascript:history.back()" style="color: var(--accent); text-decoration: none; font-size: 0.8rem;">← VOLVER</a>
-</nav>
+<main class="prod">
+  <nav class="crumbs" aria-label="Ubicación"><a href="index.html">Inicio</a><span class="sep" aria-hidden="true">›</span><span aria-current="page">Términos y condiciones</span></nav>
 
-<section style="max-width: 800px; margin: 8rem auto; padding: 0 5%;">
-  <p class="section-tag">// Contrato de Uso</p>
-  <h1 class="section-title" style="font-size: 3rem; margin-bottom: 2rem;">Términos y Condiciones</h1>
-  
-  <div class="terms-card" style="color: var(--muted); line-height: 1.8; display: flex; flex-direction: column; gap: 1.5rem;">
-    <p>Bienvenido a <strong>BalanzasCaballito</strong>. Al utilizar nuestro sitio web y realizar pedidos, aceptás los siguientes términos que rigen nuestra relación comercial.</p>
-    
-    <h3 style="color: #fff;">1. Oficina Comercial</h3>
-    <p>Operamos como oficina comercial en el barrio de Caballito, CABA. Los retiros presenciales se realizan únicamente con cita previa coordinada tras la confirmación del <a href="orden-compra (1).html" style="color: var(--accent);"> pedido</a>.</p>
-    
-    <h3 style="color: #fff;">2. Precios y Stock</h3>
-    <p>Los precios de las balanzas industriales pueden variar sin previo aviso. La disponibilidad de los modelos (150kg a 600kg) se confirmará al momento de la comunicación vía WhatsApp.</p>
+  <section class="doc-hero">
+    <p class="kicker">Condiciones de compra</p>
+    <h1>Términos y condiciones.</h1>
+    <p class="lead">Al usar nuestro sitio y hacer pedidos, aceptás estos términos, que rigen nuestra relación comercial.</p>
+    <p class="doc-p">Última actualización: noviembre de 2026.</p>
+  </section>
 
-    <h3 style="color: #fff;">3. Programa contra Entrega</h3>
-    <p>Para envíos dentro de CABA y Alrededores (Vicente López, San Martín, Tres de Febrero, La Matanza, Lanús, Avellaneda) el o los productos se abonaran al momento de recibir, al completar el formulario de <a href="orden-compra (1).html" style="color: var(--accent);">"Reserva"</a> para tu pedido, se comunicara automaticamente por WhatsApp para cotizar y confirmar el envio con el vendedor abonando unicamente el valor del Envio para poder realizarlo.</p>
-
-    <h3 style="color: #fff;">4. Envíos Interior y Entregas</h3>
-    <p>Para envíos por correo o transporte, el despacho se realiza tras la acreditación del pago. Entregas se realizan al  BalanzasCaballito no se responsabiliza por demoras ajenas derivadas de las empresas de logística de terceros.</p>
-
-    <h3 style="color: #fff;">5. Devoluciones</h3>
-    <p>De acuerdo con la normativa vigente en Argentina, el cliente tiene 10 días para revocar la compra si el producto se encuentra sin uso y en su embalaje original.</p>
-
-    <h3 style="color: #fff;">6. Soporte</h3>
-    <p>Para detalles técnicos de post-venta, consultá nuestra <a href="garantia.html" style="color: var(--accent);">Política de Garantía</a>.</p>
+  <div class="legal-wrap">
+    <nav class="legal-toc" aria-label="Contenido">
+      <p>Contenido</p>
+      <ol>
+      <li><a href="#s1">Oficina comercial</a></li>
+      <li><a href="#s2">Precios y stock</a></li>
+      <li><a href="#s3">Reservas y pago</a></li>
+      <li><a href="#s4">Entregas en CABA y alrededores</a></li>
+      <li><a href="#s5">Envíos al interior</a></li>
+      <li><a href="#s6">Devoluciones</a></li>
+      <li><a href="#s7">Garantía y soporte</a></li>
+      </ol>
+    </nav>
+    <div class="legal-body">
+    <section class="legal-sec" id="s1">
+      <h2><span class="num">01</span> Oficina comercial</h2>
+      <p>Operamos como oficina comercial en Acoyte 236, Caballito, CABA. Los retiros se hacen con cita previa, coordinada por WhatsApp una vez confirmado el pedido.</p>
+    </section>
+    <section class="legal-sec" id="s2">
+      <h2><span class="num">02</span> Precios y stock</h2>
+      <p>Los precios publicados son en pesos argentinos, en efectivo o por transferencia, y pueden cambiar sin previo aviso. La disponibilidad de los modelos (150, 300 y 500 kg) se confirma por WhatsApp al momento de la reserva, con un video del stock con la hora del momento.</p>
+    </section>
+    <section class="legal-sec" id="s3">
+      <h2><span class="num">03</span> Reservas y pago</h2>
+      <p>Podés reservar con el asistente de la web, por WhatsApp o por el formulario de contacto. La reserva se confirma cuando te contactamos. No cobramos nada por adelantado: en retiros y en entregas en CABA y alrededores, pagás al recibir la balanza, después de probarla.</p>
+    </section>
+    <section class="legal-sec" id="s4">
+      <h2><span class="num">04</span> Entregas en CABA y alrededores</h2>
+      <p>Hacemos entregas en el día en CABA y alrededores (Vicente López, San Martín, Tres de Febrero, La Matanza, Lanús, Avellaneda, entre otros). El costo y el horario de la entrega se cotizan y se confirman por WhatsApp.</p>
+    </section>
+    <section class="legal-sec" id="s5">
+      <h2><span class="num">05</span> Envíos al interior</h2>
+      <p>Al interior despachamos por Vía Cargo, una vez acreditado el pago de la balanza. Antes del despacho te mostramos un video del stock con la hora del momento y comprobantes de despachos anteriores. El flete se cotiza por WhatsApp y generalmente se abona directo a Vía Cargo. No nos hacemos responsables por demoras de la empresa de transporte.</p>
+    </section>
+    <section class="legal-sec" id="s6">
+      <h2><span class="num">06</span> Devoluciones</h2>
+      <p>De acuerdo con la normativa vigente en Argentina, tenés 10 días corridos desde que recibís el producto para revocar la compra, siempre que esté sin uso y en su embalaje original.</p>
+    </section>
+    <section class="legal-sec" id="s7">
+      <h2><span class="num">07</span> Garantía y soporte</h2>
+      <p>Todos los equipos tienen 60 días de garantía escrita, con uso correcto, contra defectos de fabricación. Los detalles están en nuestra <a href="garantia.html">política de garantía</a>, y la guía para ajustar la balanza está en <a href="calibracion.html">calibración</a>.</p>
+    </section>
+    </div>
   </div>
-</section>
 
-<footer>
-  <div class="footer-logo"><strong>BalanzasCaballito</strong><span>.</span></div>
-  <ul class="footer-links">
-    <li><a href="#catalogo">Catálogo</a></li>
-    <li><a href="calibracion.html" target="_blank">Calibración</a></li>
-    <li><a href="garantia.html" target="_blank">Garantía</a></li>
-    <li><a href="index.html#quienes-somos" target="_blank">Quiénes somos</a></li>
-    <li><a href="privacidad.html" target="_blank">Privacidad</a></li>
-    <li><a href="terminos.html" target="_blank">Terminos</a></li>
-  </ul>
-  <p class="footer-copy">© 2026 <strong>BalanzasCaballito</strong>. Todos los derechos reservados.</p>
-</footer>
+  <section class="doc-cta">
+    <h2>¿Tenés una consulta?</h2>
+    <p>Escribinos por WhatsApp o a tecnofanelectronic@gmail.com y te respondemos.</p>
+    <a class="btn" href="https://wa.me/5491140591621?text=Hola%21%20Vengo%20de%20la%20web%2C%20estaba%20buscando%20una%20balanza%20y%20quer%C3%ADa%20hablar%20con%20alguien." target="_blank" rel="noopener">Consultar por WhatsApp</a>
+  </section>
+
+  <footer class="foot">
+    <div class="foot-logo"><strong>BalanzasCaballito</strong><span>.</span></div>
+    <ul class="foot-links">
+      <li><a href="index.html#catalogo">Catálogo</a></li>
+      <li><a href="calibracion.html">Calibración</a></li>
+      <li><a href="garantia.html">Garantía</a></li>
+      <li><a href="index.html#quienes-somos">Quiénes somos</a></li>
+      <li><a href="privacidad.html">Privacidad</a></li>
+      <li><a href="terminos.html">Términos</a></li>
+    </ul>
+    <p class="foot-copy">© 2026 <strong>BalanzasCaballito</strong>. Todos los derechos reservados.</p>
+  </footer>
+</main>
+
+<script src="assets/js/site.js"></script>
+<script src="assets/js/bot.js"></script>
 </body>
 </html>

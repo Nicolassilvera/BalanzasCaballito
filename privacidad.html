@@ -1,114 +1,125 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Política de Privacidad | <strong>BalanzasCaballito</strong></title>
-  <link rel="stylesheet" href="css/styles-privacidad.css">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/png" href="assets/img/Logo Web.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Política de privacidad | BalanzasCaballito</title>
+<meta name="description" content="Cómo BalanzasCaballito recibe, usa y protege tus datos: pedidos, asistente de reservas, envíos y tus derechos sobre la información.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#D9D7D1">
+<link rel="canonical" href="https://balanzas-caballito.vercel.app/privacidad.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://balanzas-caballito.vercel.app/privacidad.html">
+<meta property="og:title" content="Política de privacidad | BalanzasCaballito">
+<meta property="og:description" content="Cómo BalanzasCaballito recibe, usa y protege tus datos: pedidos, asistente de reservas, envíos y tus derechos sobre la información.">
+<meta property="og:image" content="https://balanzas-caballito.vercel.app/assets/img/logo.png">
+<meta property="og:locale" content="es_AR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400;500;600;700&family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
+<body class="page-doc">
 
-<body>
+<button class="floating-reserva" type="button" data-bot="">Reservar Balanza YA</button>
 
-<nav>
+<header class="top">
+  <a class="logo" href="index.html"><img src="assets/img/logo.png" alt="Logo BalanzasCaballito" width="36" height="36"><span>BalanzasCaballito<span class="logo-dot-t">.</span></span></a>
+  <nav class="nav" aria-label="Principal">
+    <a class="nav-l" href="index.html#catalogo">Catálogo</a>
+    <a class="nav-l" href="index.html#compra">Cómo comprar</a>
+    <a class="nav-l" href="index.html#quienes-somos">Quiénes somos</a>
+    <a class="nav-l" href="garantia.html">Garantía</a>
+    <a class="nav-l" href="calibracion.html">Calibración</a>
+    <a class="btn btn--sm" href="https://wa.me/5491140591621?text=Hola%21%20Vengo%20de%20la%20web%2C%20estaba%20buscando%20una%20balanza%20y%20quer%C3%ADa%20hablar%20con%20alguien." target="_blank" rel="noopener">Consultar</a>
+    <button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu" onclick="openMenu()"><span></span><span></span><span></span></button>
+  </nav>
+</header>
 
-  <a href="index.html" class="nav-logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-  <img src="assets/img/Logo Web.png" alt="Logo" style="max-width: 40px; height: auto; border-radius: 50%; display: block;">
-  
-  <span><strong>BalanzasCaballito</strong><span style="color:var(--accent)">.</span></span>
-</a>
+<div class="menu" id="menu" hidden>
+  <button class="menu-x" type="button" aria-label="Cerrar menú" onclick="closeMenu()">✕</button>
+  <a href="index.html#catalogo">Catálogo</a>
+  <a href="index.html#compra">Cómo comprar</a>
+  <a href="index.html#quienes-somos">Quiénes somos</a>
+  <a href="garantia.html">Garantía</a>
+  <a href="calibracion.html">Calibración</a>
+  <a href="index.html#contacto">Contacto</a>
+</div>
 
-  <a href="javascript:history.back()" class="nav-back">
-    ← VOLVER
-  </a>
+<main class="prod">
+  <nav class="crumbs" aria-label="Ubicación"><a href="index.html">Inicio</a><span class="sep" aria-hidden="true">›</span><span aria-current="page">Política de privacidad</span></nav>
 
-</nav>
+  <section class="doc-hero">
+    <p class="kicker">Protección de datos</p>
+    <h1>Política de privacidad.</h1>
+    <p class="lead">En BalanzasCaballito cuidamos la privacidad de nuestros clientes y visitantes. Acá te contamos qué datos recibimos, para qué los usamos y cómo los protegemos.</p>
+    <p class="doc-p">Última actualización: noviembre de 2026.</p>
+  </section>
 
-<section class="terms-section">
-
-  <p class="section-tag">
-    // Protección de Datos
-  </p>
-
-  <h1 class="section-title">
-    Política de Privacidad
-  </h1>
-
-  <div class="terms-card">
-
-    <p>
-      En <strong><strong>BalanzasCaballito</strong></strong> valoramos la privacidad de nuestros clientes y visitantes.
-      Esta política explica cómo recopilamos, utilizamos y protegemos la información compartida a través de nuestro sitio web y canales de contacto.
-    </p>
-
-    <div>
-      <h3>1. Información Recopilada</h3>
-
-      <p>
-        Podemos recopilar datos proporcionados voluntariamente por el usuario, tales como nombre,
-        teléfono, dirección de entrega y consultas realizadas mediante WhatsApp o formularios de contacto.
-      </p>
+  <div class="legal-wrap">
+    <nav class="legal-toc" aria-label="Contenido">
+      <p>Contenido</p>
+      <ol>
+      <li><a href="#s1">Qué datos recibimos</a></li>
+      <li><a href="#s2">El asistente de reservas</a></li>
+      <li><a href="#s3">Para qué los usamos</a></li>
+      <li><a href="#s4">Con quién los compartimos</a></li>
+      <li><a href="#s5">Cookies y servicios externos</a></li>
+      <li><a href="#s6">Tus derechos</a></li>
+      </ol>
+    </nav>
+    <div class="legal-body">
+    <section class="legal-sec" id="s1">
+      <h2><span class="num">01</span> Qué datos recibimos</h2>
+      <p>Solo los que nos das voluntariamente: nombre, teléfono o WhatsApp, dirección de entrega y las consultas que nos hacés por WhatsApp, por mail, por el formulario de contacto o por el asistente de reservas.</p>
+    </section>
+    <section class="legal-sec" id="s2">
+      <h2><span class="num">02</span> El asistente de reservas</h2>
+      <p>Cuando armás un pedido con el asistente, los modelos, cantidades, forma de entrega y los datos que dejes (nombre y WhatsApp) nos llegan por mail para poder contactarte aunque el mensaje de WhatsApp no salga. Ese aviso se envía a través de Resend, un servicio de envío de correos que procesa los datos solo para entregarnos el mail.</p>
+    </section>
+    <section class="legal-sec" id="s3">
+      <h2><span class="num">03</span> Para qué los usamos</h2>
+      <p>Únicamente para:</p>
+      <ul class="ticks"><li>Coordinar pedidos, reservas y entregas</li><li>Brindar soporte comercial y post-venta</li><li>Responder tus consultas</li><li>Mejorar el funcionamiento del sitio</li></ul>
+    </section>
+    <section class="legal-sec" id="s4">
+      <h2><span class="num">04</span> Con quién los compartimos</h2>
+      <p>No vendemos ni compartimos tus datos personales con terceros, salvo cuando hace falta para la logística y los envíos (por ejemplo, Vía Cargo), para el envío de los avisos por mail o para cumplir obligaciones legales.</p>
+    </section>
+    <section class="legal-sec" id="s5">
+      <h2><span class="num">05</span> Cookies y servicios externos</h2>
+      <p>El sitio usa servicios externos para funcionar: tipografías de Google Fonts, el mapa de Google Maps y librerías de código servidas por CDN. Estos servicios pueden registrar datos técnicos de la visita, como la dirección IP. Si en el futuro sumamos herramientas de estadísticas, lo vamos a indicar acá.</p>
+    </section>
+    <section class="legal-sec" id="s6">
+      <h2><span class="num">06</span> Tus derechos</h2>
+      <p>Podés pedirnos en cualquier momento que te mostremos, corrijamos o borremos los datos que tengamos tuyos, conforme a la Ley 25.326 de Protección de Datos Personales. Escribinos por WhatsApp al +54 9 11 4059-1621 o a tecnofanelectronic@gmail.com.</p>
+    </section>
     </div>
-
-    <div>
-      <h3>2. Uso de la Información</h3>
-
-      <p>
-        La información recopilada se utiliza únicamente para:
-      </p>
-
-      <p>
-        • Coordinar pedidos y entregas<br>
-        • Brindar soporte comercial y post-venta<br>
-        • Mejorar la experiencia del usuario en el sitio<br>
-        • Contactar al cliente respecto a consultas o compras realizadas
-      </p>
-    </div>
-
-    <div>
-      <h3>3. Protección de Datos</h3>
-
-      <p>
-        <strong>BalanzasCaballito</strong> no comercializa ni comparte información personal con terceros,
-        salvo cuando resulte necesario para la logística, envíos o cumplimiento de obligaciones legales.
-      </p>
-    </div>
-
-    <div>
-      <h3>4. Cookies y Estadísticas</h3>
-
-      <p>
-        El sitio puede utilizar cookies o herramientas de análisis para conocer estadísticas de navegación
-        y mejorar el funcionamiento general de la plataforma.
-      </p>
-    </div>
-
-    <div>
-      <h3>5. Contacto</h3>
-
-      <p>
-        Para consultas relacionadas con privacidad o manejo de datos,
-        podés comunicarte mediante nuestros canales oficiales publicados en el sitio web.
-      </p>
-    </div>
-
   </div>
 
-</section>
+  <section class="doc-cta">
+    <h2>¿Tenés una consulta?</h2>
+    <p>Escribinos por WhatsApp o a tecnofanelectronic@gmail.com y te respondemos.</p>
+    <a class="btn" href="https://wa.me/5491140591621?text=Hola%21%20Vengo%20de%20la%20web%2C%20estaba%20buscando%20una%20balanza%20y%20quer%C3%ADa%20hablar%20con%20alguien." target="_blank" rel="noopener">Consultar por WhatsApp</a>
+  </section>
 
-<footer>
-  <div class="footer-logo"><strong>BalanzasCaballito</strong><span>.</span></div>
-  <ul class="footer-links">
-    <li><a href="#catalogo">Catálogo</a></li>
-    <li><a href="calibracion.html" target="_blank">Calibración</a></li>
-    <li><a href="garantia.html" target="_blank">Garantía</a></li>
-    <li><a href="index.html#quienes-somos" target="_blank">Quiénes somos</a></li>
-    <li><a href="privacidad.html" target="_blank">Privacidad</a></li>
-    <li><a href="terminos.html" target="_blank">Terminos</a></li>
-  </ul>
-  <p class="footer-copy">© 2026 <strong>BalanzasCaballito</strong>. Todos los derechos reservados.</p>
-</footer>
+  <footer class="foot">
+    <div class="foot-logo"><strong>BalanzasCaballito</strong><span>.</span></div>
+    <ul class="foot-links">
+      <li><a href="index.html#catalogo">Catálogo</a></li>
+      <li><a href="calibracion.html">Calibración</a></li>
+      <li><a href="garantia.html">Garantía</a></li>
+      <li><a href="index.html#quienes-somos">Quiénes somos</a></li>
+      <li><a href="privacidad.html">Privacidad</a></li>
+      <li><a href="terminos.html">Términos</a></li>
+    </ul>
+    <p class="foot-copy">© 2026 <strong>BalanzasCaballito</strong>. Todos los derechos reservados.</p>
+  </footer>
+</main>
 
+<script src="assets/js/site.js"></script>
+<script src="assets/js/bot.js"></script>
 </body>
 </html>
