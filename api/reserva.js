@@ -76,9 +76,14 @@ module.exports = async (req, res) => {
         html, text
       })
     });
-    if (!r.ok) return res.status(502).json({ ok: false });
+    if (!r.ok) {
+      // El detalle va a los logs de Vercel; al navegador solo el código de Resend.
+      console.error('Resend rechazó el envío', r.status, await r.text());
+      return res.status(502).json({ ok: false, resend: r.status });
+    }
     return res.status(200).json({ ok: true });
   } catch (e) {
-    return res.status(502).json({ ok: false });
+    console.error('No se pudo contactar a Resend', e);
+    return res.status(502).json({ ok: false, resend: 0 });
   }
 };
