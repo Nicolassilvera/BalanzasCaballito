@@ -4,6 +4,11 @@
   var kgEl = document.getElementById('kg');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var finePointer = window.matchMedia('(pointer: fine)').matches;
+  // Modo celular: menos resolución, sin sombras, y solo dibuja cuando algo se mueve.
+  var MOBILE = window.matchMedia('(max-width: 820px), (pointer: coarse)').matches;
+  // Equipos con muy poca memoria o con "ahorro de datos": sin 3D, la página funciona igual.
+  var conn = navigator.connection || {};
+  var WEAK = !!conn.saveData || (navigator.deviceMemory && navigator.deviceMemory <= 2);
   var clamp = function (x, a, b) { return Math.min(b, Math.max(a, x)); };
   var lerp = function (a, b, t) { return a + (b - a) * t; };
   var sm = function (a, b, x) { x = clamp((x - a) / (b - a), 0, 1); return x * x * (3 - 2 * x); };
@@ -65,28 +70,33 @@
     return h > 0 ? clamp(window.scrollY / h, 0, 1) : 0;
   }
 
-  if (typeof THREE === 'undefined') {
+  // Sin 3D: igual cambia claro/oscuro por capítulo y mueve el contador, a lo sumo una vez por cuadro.
+  function noGL() {
     document.documentElement.classList.add('nogl');
-    document.addEventListener('scroll', function () {
+    var queued = false;
+    function upd() {
+      queued = false;
       document.body.classList.toggle('is-dark', currentTarget().darkPick === 1);
       kgEl.textContent = (scrollProgress() * 500).toFixed(2).padStart(6, '0');
-    }, { passive: true });
-    return;
+    }
+    document.addEventListener('scroll', function () { if (!queued) { queued = true; requestAnimationFrame(upd); } }, { passive: true });
+    upd();
   }
+  if (typeof THREE === 'undefined' || WEAK) { noGL(); return; }
 
   var renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: !MOBILE, alpha: true, powerPreference: MOBILE ? 'default' : 'high-performance' });
   } catch (err) {
-    document.documentElement.classList.add('nogl');
+    noGL();
     return;
   }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, MOBILE ? 1.5 : 2));
   renderer.setClearColor(0x000000, 0);
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !MOBILE;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   var scene = new THREE.Scene();
@@ -111,7 +121,7 @@
 
   var key = new THREE.DirectionalLight(0xffffff, 1.15);
   key.position.set(5, 12, 8);
-  key.castShadow = true;
+  key.castShadow = !MOBILE;
   key.shadow.mapSize.set(2048, 2048);
   key.shadow.camera.left = -13; key.shadow.camera.right = 13; key.shadow.camera.top = 13; key.shadow.camera.bottom = -13;
   key.shadow.camera.near = 1; key.shadow.camera.far = 40;
@@ -122,10 +132,12 @@
   scene.add(rim);
   scene.add(new THREE.HemisphereLight(0xffffff, 0x444a52, 0.4));
 
-  var floor = new THREE.Mesh(new THREE.PlaneGeometry(90, 90), new THREE.ShadowMaterial({ opacity: 0.34 }));
-  floor.rotation.x = -Math.PI / 2;
-  floor.receiveShadow = true;
-  scene.add(floor);
+  if (!MOBILE) {
+    var floor = new THREE.Mesh(new THREE.PlaneGeometry(90, 90), new THREE.ShadowMaterial({ opacity: 0.34 }));
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
+  }
 
   // ---- textures: hammertone speckle and diamond tread plate
   function noiseTexture() {
@@ -359,7 +371,8 @@
     return {
       group: grp,
       setValue: function (txt, now) {
-        if (txt !== lastTxt && now - lastAt > 70) { lastTxt = txt; lastAt = now; draw(txt); }
+        if (txt !== lastTxt && now - lastAt > (MOBILE ? 200 : 70)) { lastTxt = txt; lastAt = now; draw(txt); }
+        return txt !== lastTxt;
       },
       apply: function (e, hd, f) {
         P.plate.position.y = 1.8 * e;
@@ -382,12 +395,20 @@
   var LX = [-4.2, 0, 4.2];
   var scales = CFG.map(function (c) { var s = makeScale(c); scene.add(s.group); return s; });
 
+  var vw = 0, vh = 0, dirty = true, scrolled = true;
   function resize() {
-    renderer.setSize(window.innerWidth, window.innerHeight, false);
-    camera.aspect = window.innerWidth / window.innerHeight;
+    var w = window.innerWidth, h = window.innerHeight;
+    // En celular la barra del navegador aparece/desaparece al scrollear y cambia el alto:
+    // si el ancho es el mismo y el alto cambió poco, no rearmamos el lienzo.
+    if (MOBILE && w === vw && Math.abs(h - vh) < 160) { scrolled = true; return; }
+    vw = w; vh = h;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    dirty = true; scrolled = true;
   }
   window.addEventListener('resize', resize);
+  window.addEventListener('scroll', function () { scrolled = true; }, { passive: true });
   resize();
 
   var px = 0, py = 0, spx = 0, spy = 0;
@@ -396,19 +417,36 @@
   }, { passive: true });
 
   var introT = reduce ? 1 : 0, lastT = performance.now(), shown = 0, lookV = new THREE.Vector3();
+  var tgt = null, lastKg = '', lastOpacity = '';
+  var sway = !reduce && !MOBILE;
+
+  function gap(a, b) {
+    var m = 0;
+    for (var k in b) {
+      if (k === 'dark' || k === 'darkPick') continue;
+      if (Array.isArray(b[k])) { for (var i = 0; i < b[k].length; i++) m = Math.max(m, Math.abs(b[k][i] - a[k][i])); }
+      else m = Math.max(m, Math.abs(b[k] - a[k]));
+    }
+    return m;
+  }
 
   function frame(now) {
+    requestAnimationFrame(frame);
     var dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
-    var tgt = currentTarget();
-    stepState(cur, tgt, reduce ? 1 : 1 - Math.exp(-dt * 5));
+    if (scrolled || !tgt) { tgt = currentTarget(); scrolled = false; }
+    var pr = scrollProgress();
+    var moving = dirty || introT < 1 || sway || gap(cur, tgt) > 0.0005 || Math.abs(pr * 500 - shown) > 0.005 ||
+      (finePointer && (Math.abs(px - spx) > 0.002 || Math.abs(py - spy) > 0.002));
     document.body.classList.toggle('is-dark', tgt.darkPick === 1);
+    if (!moving) return;            // quieto: no se recalcula ni se dibuja nada
+    dirty = false;
+    stepState(cur, tgt, reduce ? 1 : 1 - Math.exp(-dt * 5));
     if (introT < 1) introT = Math.min(1, introT + dt / 2.4);
     var ie = reduce ? 0 : Math.pow(1 - introT, 3);
 
-    var pr = scrollProgress();
     shown += (pr * 500 - shown) * (reduce ? 1 : 1 - Math.exp(-dt * 8));
     var kgTxt = shown.toFixed(2);
-    kgEl.textContent = kgTxt.padStart(6, '0');
+    if (kgTxt !== lastKg) { lastKg = kgTxt; kgEl.textContent = kgTxt.padStart(6, '0'); }
 
     var sp = cur.spread;
     scales.forEach(function (s, i) {
@@ -416,9 +454,9 @@
       if (i === 1) {
         g.visible = true;
         g.position.x = LX[1] * sp;
-        g.rotation.y = cur.rot + ie * 2.6 + (reduce ? 0 : Math.sin(now * 0.00035) * 0.05);
+        g.rotation.y = cur.rot + ie * 2.6 + (sway ? Math.sin(now * 0.00035) * 0.05 : 0);
         s.apply(clamp(cur.ex + ie * 1.0, 0, 1.3), cur.hd, cur.f);
-        s.setValue(sp > 0.5 ? String(CFG[1].cap) + '.00' : kgTxt, now);
+        if (s.setValue(sp > 0.5 ? String(CFG[1].cap) + '.00' : kgTxt, now)) dirty = true;
       } else {
         g.visible = sp > 0.01;
         g.position.x = LX[i] * sp;
@@ -429,7 +467,7 @@
       }
     });
 
-    var w = window.innerWidth, h = window.innerHeight, aspect = w / h;
+    var w = vw, h = vh, aspect = w / h;
     var dx = cur.cam[0] - cur.look[0], dy = cur.cam[1] - cur.look[1], dz = cur.cam[2] - cur.look[2];
     var dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
     var fit = clamp((cur.ow / (0.574 * aspect)) / dist, 1, 4);
@@ -444,9 +482,9 @@
     var desk = aspect > 1.1 ? 1 : 0;
     camera.setViewOffset(w, h, -cur.sx * desk * w, (desk ? cur.sy : 0.22) * h, w, h);
 
-    canvas.style.opacity = cur.fade.toFixed(3);
+    var op = cur.fade.toFixed(3);
+    if (op !== lastOpacity) { lastOpacity = op; canvas.style.opacity = op; }
     renderer.render(scene, camera);
-    requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
 })();
