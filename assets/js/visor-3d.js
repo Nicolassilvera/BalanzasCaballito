@@ -199,10 +199,10 @@
     function makeScale(w, d, blue) {
       var grp = new THREE.Group();
       function tex(src, rx, ry) { var t = src.clone(); t.needsUpdate = true; t.repeat.set(rx, ry); return t; }
-      var frameCol = blue ? 0x23409a : 0x4a4e54;
+      var frameCol = blue ? 0x23409a : 0x2e3136;
       var hammer = new THREE.MeshStandardMaterial({ color: frameCol, metalness: 0.6, roughness: 0.5, bumpMap: tex(noise, 6, 6), bumpScale: 0.18 });
       var hammerMast = new THREE.MeshStandardMaterial({ color: frameCol, metalness: 0.55, roughness: 0.45 });
-      var plateTop = new THREE.MeshStandardMaterial({ color: blue ? 0x2f56c4 : 0x5a5f66, map: tex(diaMap, w * 2.8, d * 2.8), bumpMap: tex(diaBump, w * 2.8, d * 2.8), bumpScale: 0.6, metalness: 0.65, roughness: 0.42 });
+      var plateTop = new THREE.MeshStandardMaterial({ color: blue ? 0x2f56c4 : 0x393c41, map: tex(diaMap, w * 2.8, d * 2.8), bumpMap: tex(diaBump, w * 2.8, d * 2.8), bumpScale: 0.6, metalness: 0.65, roughness: 0.42 });
       var steel = new THREE.MeshStandardMaterial({ color: 0xbec3c8, metalness: 0.95, roughness: 0.32 });
       var black = new THREE.MeshStandardMaterial({ color: 0x121417, metalness: 0.3, roughness: 0.6 });
       var chrome = new THREE.MeshStandardMaterial({ color: 0xe3e6e9, metalness: 1, roughness: 0.14 });
@@ -220,11 +220,11 @@
       add(new THREE.BoxGeometry(0.02, 0.14, d + 0.08), hammer, -((w + 0.08) / 2 - 0.01), 0.28, 0);
 
       var mz = -(d / 2) - 0.5;
-      add(new THREE.BoxGeometry(0.2, 0.05, 0.66), steel, 0, 0.3, -(d / 2) - 0.2);
-      add(new THREE.BoxGeometry(0.34, 0.3, 0.22), black, 0, 0.47, mz);
+      add(new THREE.BoxGeometry(0.2, 0.05, 0.66), blue ? hammerMast : steel, 0, 0.3, -(d / 2) - 0.2);
+      add(new THREE.BoxGeometry(0.34, 0.3, 0.22), blue ? hammerMast : black, 0, 0.47, mz); // en la de 500 kg, uniones azules
       var pin = add(new THREE.CylinderGeometry(0.035, 0.035, 0.42, 14), steel, 0, 0.47, mz); pin.rotation.z = Math.PI / 2;
       add(new THREE.BoxGeometry(0.22, MAST_H, 0.22), hammerMast, 0, MAST_Y0 + MAST_H / 2, mz);
-      add(new THREE.BoxGeometry(0.46, 0.7, 0.26), black, 0, MAST_TOP + 0.15, mz);
+      add(new THREE.BoxGeometry(0.46, 0.7, 0.26), blue ? hammerMast : black, 0, MAST_TOP + 0.15, mz);
 
       var head = new THREE.Group(); head.position.set(0, MAST_TOP + 0.9, mz + 0.24); head.rotation.x = -0.26; grp.add(head);
       var HW = 1.5, HH = 0.96;
@@ -393,6 +393,11 @@
   }
   if (modal) {
     modal.querySelector('.v3d-x').addEventListener('click', closeModal);
+    // tocar fuera de la ventana (el fondo difuminado) la cierra
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+    if (window.matchMedia('(pointer: fine)').matches) {
+      var mh = modal.querySelector('.v3d-mhint'); if (mh) mh.textContent = 'Arrastrá para girarla 360°';
+    }
     window.addEventListener('popstate', hideModal);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen) closeModal(); });
     // al ir a la ficha desde la ventana, primero se cierra
