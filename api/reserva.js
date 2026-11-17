@@ -1,9 +1,10 @@
 // Vercel Serverless Function: recibe los checkpoints del asistente y avisa por mail con Resend.
 // Variables de entorno (Vercel > Settings > Environment Variables):
 //   RESEND_API_KEY  (obligatoria)  clave de https://resend.com/api-keys
-//   RESEND_TO       (opcional)     a quién llega el aviso. Default: tecnofanelectronic@gmail.com
-//   RESEND_FROM     (opcional)     remitente. Default: onboarding@resend.dev (solo envía al mail dueño de la cuenta
-//                                  de Resend; para otro destino hay que verificar un dominio en Resend)
+//   RESEND_TO       (obligatoria)  a quién llega el aviso. Con el remitente de prueba onboarding@resend.dev
+//                                  tiene que ser el mail dueño de la cuenta de Resend (si no, Resend responde 403)
+//   RESEND_FROM     (opcional)     remitente. Default: onboarding@resend.dev; para otro remitente hay que
+//                                  verificar un dominio en Resend
 
 const STAGES = {
   seleccion: 'Armó un pedido en el asistente',
@@ -33,6 +34,8 @@ module.exports = async (req, res) => {
 
   const key = process.env.RESEND_API_KEY;
   if (!key) return res.status(503).json({ ok: false, error: 'RESEND_API_KEY no configurada' });
+  const to = (process.env.RESEND_TO || '').trim();
+  if (!to) return res.status(503).json({ ok: false, error: 'RESEND_TO no configurada' });
 
   const id = clip(b.id, 8).replace(/[^A-Z0-9]/gi, '') || 'S/N';
   const items = (Array.isArray(b.items) ? b.items : []).slice(0, 10).map((i) => ({
@@ -71,7 +74,7 @@ module.exports = async (req, res) => {
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: process.env.RESEND_FROM || 'Balanzas Caballito <onboarding@resend.dev>',
-        to: [process.env.RESEND_TO || 'tecnofanelectronic@gmail.com'],
+        to: [to],
         subject: `[Reserva web #${id}] ${STAGES[b.stage]}${nombre ? ' · ' + nombre : ''}`,
         html, text
       })

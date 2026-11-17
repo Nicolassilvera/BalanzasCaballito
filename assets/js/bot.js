@@ -13,8 +13,8 @@
   var origin = 'asistente';
   var ENTREGAS = {
     retiro: 'Retiro en Caballito',
-    caba: 'Envío en CABA y alrededores',
-    interior: 'Envío al interior (Vía Cargo)'
+    caba: 'Envío en CABA',
+    interior: 'Envío fuera de CABA e interior (Vía Cargo)'
   };
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // El panel se arma acá: cada página solo necesita incluir este archivo
@@ -91,7 +91,7 @@
     bot('Acá las tenés juntas, son fotos reales nuestras:');
     bot(fig, true);
     bot(g, true);
-    bot('Tocá cualquier foto para verla grande. Si querés, Nicolás te manda un video del stock con la hora del día.').then(function () {
+    bot('Tocá cualquier foto para verla grande.').then(function () {
         comparing = false;
         actions(lastActions);
       });
@@ -180,8 +180,8 @@
     bot('¿Cómo la querés recibir?').then(function () {
         actions([
           chip('Retiro en Caballito', function () { entrega('retiro'); }),
-          chip('Envío en CABA y alrededores', function () { entrega('caba'); }),
-          chip('Envío al interior', function () { entrega('interior'); }),
+          chip('Envío en CABA', function () { entrega('caba'); }),
+          chip('Envío fuera de CABA e interior', function () { entrega('interior'); }),
           chip('Cambiar cantidades', function () { st.phase = 'intro'; actions([]); me('Quiero cambiar las cantidades'); picker(); })
         ]);
       });
@@ -194,12 +194,12 @@
     me(ENTREGAS[tipo]);
     var txt = {
       retiro: 'Perfecto, retirás en <strong>Acoyte 236, Caballito</strong> (visita coordinada por WhatsApp). <strong>No pagás nada por adelantado</strong>: pagás en el momento, después de probar la balanza.',
-      caba: 'Hacemos entregas <strong>en el día</strong> en CABA y alrededores. <strong>No pagás nada por adelantado</strong>: pagás la balanza y el envío al recibirla, después de probarla.',
-      interior: 'Al interior despachamos por <strong>Vía Cargo</strong>. En este caso <strong>la balanza se paga antes del despacho</strong> y el flete lo pagás directo a Vía Cargo. Nicolás te cotiza el envío.'
+      caba: 'Hacemos envíos en CABA: si confirmamos la reserva, te la llevamos <strong>en el día</strong> o, si no llegamos, <strong>al día siguiente</strong>. <strong>No pagás nada por adelantado</strong>: pagás la balanza y el envío al recibirla, después de probarla.',
+      interior: 'Fuera de CABA y al interior despachamos por <strong>Vía Cargo</strong>. En este caso <strong>la balanza se paga antes del despacho</strong> y el flete lo pagás directo a Vía Cargo. Nicolás te cotiza el envío.'
     }[tipo];
     var ask = tipo === 'interior'
       ? 'Antes de pagar, Nicolás te manda un <strong>video del stock con la hora del día</strong> y <strong>comprobantes de despachos por Vía Cargo</strong>. ¿Te conecto con él?'
-      : '¿La reservamos? Te conecto con <strong>Nicolás</strong> para confirmar: te manda un <strong>video del stock con la hora del día</strong>, donde se ve tu balanza, y cerrás todo con él.';
+      : '¿La reservamos? Te conecto con <strong>Nicolás</strong> para confirmar la reserva y cerrar todo con él.';
     var yes = tipo === 'interior' ? 'Sí, conectame con Nicolás' : 'Sí, quiero reservar';
     bot(txt);
     bot(ask).then(function () {
@@ -253,8 +253,8 @@
     m += 'Nombre: ' + st.nombre + '\n';
     if (st.tel) m += 'WhatsApp: ' + st.tel + '\n';
     m += st.entrega === 'interior'
-      ? '\nQuiero reservar y cotizar el envío por Vía Cargo. ¿Me pasás el video del stock y los comprobantes de despacho?'
-      : '\nQuiero reservar. ¿Me pasás el video del stock de hoy?';
+      ? '\nQuiero reservar este pedido y cotizar el envío por Vía Cargo. ¿Me confirmás que hay stock para cerrarlo?'
+      : '\nQuiero reservar este pedido. ¿Me confirmás que hay stock para cerrarlo?';
     return m;
   }
   function enviar() {
@@ -271,8 +271,8 @@
         setTimeout(function () {
           var extra = st.mailOk && st.tel ? ' Si WhatsApp no se abrió, no pasa nada: tu pedido ya nos llegó y te escribimos nosotros al ' + esc(st.tel) + '.' : '';
           var fin = st.entrega === 'interior'
-            ? 'Listo. Nicolás te responde con el <strong>video del stock con la hora del día</strong>, los <strong>comprobantes de despacho</strong> y la cotización del envío por Vía Cargo.'
-            : 'Listo. Nicolás te responde con el <strong>video del stock con la hora del día</strong> y cierran la reserva. Recordá: <strong>no pagás nada por adelantado</strong>.';
+            ? 'Listo. Nicolás te confirma el stock, te cotiza el envío por Vía Cargo y te muestra <strong>comprobantes de despacho</strong> antes de pagar.'
+            : 'Listo. Nicolás te confirma el stock y cierran la reserva. Recordá: <strong>no pagás nada por adelantado</strong>.';
           bot(fin + extra).then(function () {
             actions([a, chip('Armar otro pedido', reiniciar)]);
           });

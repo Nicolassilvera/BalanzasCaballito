@@ -1,0 +1,4 @@
+# Variables locales con claves reales: nunca se suben
+.env
+.env.local
+.vercel
