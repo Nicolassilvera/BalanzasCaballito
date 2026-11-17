@@ -417,6 +417,7 @@ h3{font-size:20px;font-weight:700;line-height:1.25;letter-spacing:-.01em}
 .bot-act:empty{display:none}
 .chip{min-height:44px;font-weight:600;font-size:14.5px;padding:9px 13px;border-radius:var(--r-btn);border:1.5px solid var(--ink);background:transparent;cursor:pointer}
 .chip:hover{background:var(--ink);color:#fff}
+a.chip{display:inline-flex;align-items:center;text-decoration:none;color:var(--ink)}
 .bot-act .btn{width:100%}
 .bot-act .btn:disabled{opacity:.5;cursor:default}
 .bot-form{display:flex;flex-direction:column;gap:9px;width:100%}

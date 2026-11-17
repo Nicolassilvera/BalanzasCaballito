@@ -274,7 +274,12 @@
             ? 'Listo. Nicolás te confirma el stock, te cotiza el envío por Vía Cargo y te muestra <strong>comprobantes de despacho</strong> antes de pagar.'
             : 'Listo. Nicolás te confirma el stock y cierran la reserva. Recordá: <strong>no pagás nada por adelantado</strong>.';
           bot(fin + extra).then(function () {
-            actions([a, chip('Armar otro pedido', reiniciar)]);
+            // Botón de arrepentimiento (Res. SCI 424/2020): WhatsApp precargado con el número de pedido
+            var arr = el('a', 'chip', 'Me arrepiento de mi compra');
+            arr.href = WA + '?text=' + encodeURIComponent('Hola, quiero arrepentirme de mi compra (botón de arrepentimiento). Pedido #' + st.id + ' · Nombre: ' + st.nombre);
+            arr.target = '_blank'; arr.rel = 'noopener';
+            arr.addEventListener('click', function () { track('whatsapp_click', { section: 'arrepentimiento' }); });
+            actions([a, chip('Armar otro pedido', reiniciar), arr]);
           });
         }, 400);
       });
