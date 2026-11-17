@@ -1,0 +1,23 @@
+{
+  "name": "Balanzas Caballito",
+  "short_name": "Balanzas",
+  "description": "Balanzas industriales de plataforma de 150, 300 y 500 kg en Caballito, CABA.",
+  "lang": "es-AR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#F1F1EE",
+  "theme_color": "#17191C",
+  "icons": [
+    {
+      "src": "/assets/img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/favicon-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ]
+}

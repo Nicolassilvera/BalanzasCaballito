@@ -1,0 +1,25 @@
+# Balanzas Caballito
+
+> Venta de balanzas industriales de plataforma de 150, 300 y 500 kg en Caballito, Ciudad Autónoma de Buenos Aires, Argentina. Stock disponible, entrega en el día en CABA con pago al recibir y envíos a todo el país por Vía Cargo.
+
+- Dirección: Acoyte 236, Caballito, CABA (retiros solo con cita confirmada)
+- Horario: lunes a sábado de 10 a 22
+- WhatsApp: +54 9 11 4059-1621
+- Mail: tecnofanelectronic@gmail.com
+- Medios de pago: efectivo, transferencia y Mercado Pago (cuotas con tarjeta a consultar)
+- Garantía: 60 días con uso correcto por fallas de fábrica, y atención postventa siempre
+
+## Modelos y precios (en efectivo; por transferencia, $ 5.000 más)
+
+- [Balanza de plataforma 150 kg](https://balanzas-caballito.vercel.app/balanza-150.html): uso comercial, plataforma de 40 × 30 cm, precisión de 20 g, $ 100.000
+- [Balanza de plataforma 300 kg](https://balanzas-caballito.vercel.app/balanza-300.html): depósito y logística, plataforma de 50 × 40 cm, precisión de 50 g, $ 130.000
+- [Balanza de plataforma 500 kg](https://balanzas-caballito.vercel.app/balanza-500.html): cargas pesadas, plataforma de 60 × 45 cm, precisión de 100 g, $ 180.000
+
+Todas tienen batería de 12 a 16 h (también funcionan a 220 V), visor LCD de 3 pantallas (peso, precio unitario y total), funciones TARA, CERO, ADD, STORE, C y memorias M1 a M7, y mástil plegable con gatillo.
+
+## Información
+
+- [Garantía](https://balanzas-caballito.vercel.app/garantia.html)
+- [Guía de calibración](https://balanzas-caballito.vercel.app/calibracion.html)
+- [Términos y condiciones](https://balanzas-caballito.vercel.app/terminos.html)
+- [Política de privacidad](https://balanzas-caballito.vercel.app/privacidad.html)
