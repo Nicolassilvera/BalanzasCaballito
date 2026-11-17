@@ -248,7 +248,8 @@
 
     var models = {};
     PRODS.forEach(function (p) {
-      var dm = dims(p), w = dm[0] / CM, d = dm[1] / CM;
+      // el lado paralelo al tablero (ancho, eje x) es siempre la medida menor; la mayor va en profundidad
+      var dm = dims(p), w = Math.min(dm[0], dm[1]) / CM, d = Math.max(dm[0], dm[1]) / CM;
       var g = new THREE.Group();
       g.add(makeScale(w, d, p.id === '500'));
       var sh = new THREE.Mesh(new THREE.PlaneGeometry(w * 1.5, d * 1.6), shadowMat); sh.rotation.x = -Math.PI / 2; sh.position.y = 0.002; g.add(sh);
@@ -257,7 +258,7 @@
     });
 
     // cámara orbital: arrastre horizontal = giro del plato, vertical = inclinación
-    var target = new THREE.Vector3(0, 1.75, -0.3);
+    var target = new THREE.Vector3(0, 1.75, -0.45);
     var yaw = 0.7, el = 0.3, vYaw = 0, dist = 11, lastTouch = -1e9, dragging = false, lx = 0, ly = 0;
     var swapT = 1, visible = true, running = false, lastT = 0, needs = true;
     function place() {
@@ -280,7 +281,7 @@
     canvas.addEventListener('pointerdown', function (e) {
       dragging = true; lx = e.clientX; ly = e.clientY; vYaw = 0; lastTouch = performance.now();
       try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* sin captura */ }
-      canvas.classList.add('is-drag');
+      canvas.classList.add('is-drag', 'no-ring');
       if (hint) hint.classList.add('is-hidden');
     });
     canvas.addEventListener('pointermove', function (e) {
@@ -295,6 +296,7 @@
     canvas.addEventListener('pointerup', up);
     canvas.addEventListener('pointercancel', up);
     canvas.addEventListener('keydown', function (e) {
+      canvas.classList.remove('no-ring'); // con teclado sí se muestra el contorno de foco
       var used = true;
       if (e.key === 'ArrowLeft') yaw -= 0.3; else if (e.key === 'ArrowRight') yaw += 0.3;
       else if (e.key === 'ArrowUp') el = Math.max(-0.05, el - 0.12); else if (e.key === 'ArrowDown') el = Math.min(1.15, el + 0.12);

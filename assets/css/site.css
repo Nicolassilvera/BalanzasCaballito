@@ -569,3 +569,4 @@ html.v3d-lock .wabar{display:none}
 }
 
 @media (max-width:900px){.v3d{max-width:480px;margin:0 auto}}
+.v3d-canvas.no-ring:focus,.v3d-canvas.no-ring:focus-visible{outline:none}
