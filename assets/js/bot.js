@@ -1,13 +1,16 @@
 // ===== Asistente de reservas =====
-// Precios: si cambian, actualizarlos acá Y en las tarjetas del catálogo (HTML).
+// Los modelos y precios salen de data/productos.js (fuente única). El fallback es solo por si no carga.
 (function () {
   'use strict';
-  var WA = 'https://wa.me/5491140591621';
-  var PRODS = [
-    { id: '150', name: 'Báscula 150 kg', plat: '40x30 cm', ef: 100000, tr: 105000 },
-    { id: '300', name: 'Báscula 300 kg', plat: '50x40 cm', ef: 130000, tr: 135000 },
-    { id: '500', name: 'Báscula 500 kg', plat: '60x45 cm', ef: 180000, tr: 185000 }
-  ];
+  var D = window.BC_DATOS || {};
+  var WA = 'https://wa.me/' + (D.whatsapp || '5491140591621');
+  var PRODS = (D.productos || [
+    { id: '150', nombre: 'Balanza de plataforma 150 kg', plataforma: '40 × 30 cm', ef: 100000, tr: 105000 },
+    { id: '300', nombre: 'Balanza de plataforma 300 kg', plataforma: '50 × 40 cm', ef: 130000, tr: 135000 },
+    { id: '500', nombre: 'Balanza de plataforma 500 kg', plataforma: '60 × 45 cm', ef: 180000, tr: 185000 }
+  ]).map(function (p) { return { id: p.id, name: p.nombre, plat: p.plataforma, ef: p.ef, tr: p.tr }; });
+  var track = function (n, d) { if (window.bcTrack) window.bcTrack(n, d); };
+  var origin = 'asistente';
   var ENTREGAS = {
     retiro: 'Retiro en Caballito',
     caba: 'Envío en CABA y alrededores',
@@ -15,7 +18,16 @@
   };
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // El panel se arma acá: cada página solo necesita incluir este archivo
-  if (!document.getElementById('bot')) document.body.insertAdjacentHTML('beforeend', "<div class=\"bot\" id=\"bot\" role=\"dialog\" aria-labelledby=\"bot-title\" hidden>\n  <div class=\"bot-head\">\n    <img src=\"assets/img/nicolas.jpg\" alt=\"\" width=\"40\" height=\"40\">\n    <div><b id=\"bot-title\">Asistente de reservas</b><small><span class=\"on-dot\"></span>Te conecta con Nicolás</small></div>\n    <button class=\"bot-x\" type=\"button\" aria-label=\"Cerrar asistente\" data-bot-close>✕</button>\n  </div>\n  <div class=\"bot-log\" id=\"bot-log\" aria-live=\"polite\"></div>\n  <div class=\"bot-act\" id=\"bot-act\"></div>\n  <div class=\"bot-foot\">\n    <button type=\"button\" data-bot-compare>Ver fotos y comparar</button>\n    <a class=\"bot-direct\" href=\"https://wa.me/5491140591621?text=Hola%21%20Vengo%20de%20la%20web%2C%20estaba%20buscando%20una%20balanza%20y%20quer%C3%ADa%20hablar%20con%20alguien.\" target=\"_blank\" rel=\"noopener\">Hablar con alguien ya →</a>\n  </div>\n</div>");
+  if (!document.getElementById('bot')) document.body.insertAdjacentHTML('beforeend',
+    '<div class="bot" id="bot" role="dialog" aria-modal="false" aria-labelledby="bot-title" hidden>' +
+    '<div class="bot-head"><img src="assets/img/nicolas.webp" alt="" width="40" height="40">' +
+    '<div><b id="bot-title">Armá tu pedido</b><small><span class="on-dot"></span>Te conecta con Nicolás</small></div>' +
+    '<button class="bot-x" type="button" aria-label="Cerrar el asistente" data-bot-close><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
+    '<div class="bot-log" id="bot-log" aria-live="polite"></div>' +
+    '<div class="bot-act" id="bot-act"></div>' +
+    '<div class="bot-foot"><button type="button" data-bot-compare>Ver fotos y comparar</button>' +
+    '<a class="bot-direct" href="' + WA + '?text=' + encodeURIComponent('Hola, vengo de la web de Balanzas Caballito y quiero consultar por una balanza.') + '" target="_blank" rel="noopener" data-wa="asistente">Hablar con Nicolás</a></div>' +
+    '</div>');
   var panel = document.getElementById('bot');
   var log = document.getElementById('bot-log');
   var act = document.getElementById('bot-act');
@@ -26,7 +38,7 @@
   var pickUpd = {}; // funciones para refrescar cada fila del selector activo
   PRODS.forEach(function (p) { st.qty[p.id] = 0; });
 
-  var fmt = function (n) { return '$' + n.toLocaleString('es-AR'); };
+  var fmt = function (n) { return '$ ' + n.toLocaleString('es-AR'); };
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function scroll() { log.scrollTop = log.scrollHeight; }
@@ -70,16 +82,16 @@
     act.innerHTML = '';
     me('Quiero verlas y compararlas');
     var fig = el('figure', 'bot-fig');
-    fig.innerHTML = '<a href="assets/img/comparativa.jpg" target="_blank" rel="noopener"><img src="assets/img/comparativa.jpg" alt="Las tres balanzas juntas: 500 kg azul a la izquierda, 300 kg al medio y 150 kg a la derecha" width="944" height="1000"></a>' +
-      '<figcaption>De izquierda a derecha: <strong>500 kg</strong> (azul, base 60×45), <strong>300 kg</strong> (50×40) y <strong>150 kg</strong> (40×30).</figcaption>';
+    fig.innerHTML = '<a href="assets/img/comparativa.jpg" target="_blank" rel="noopener"><img src="assets/img/comparativa.jpg" alt="Las tres balanzas juntas: la de 500 kg azul a la izquierda, la de 300 kg al medio y la de 150 kg a la derecha" width="944" height="1000"></a>' +
+      '<figcaption>De izquierda a derecha: <strong>500 kg</strong> (azul, plataforma de 60 × 45 cm), <strong>300 kg</strong> (50 × 40 cm) y <strong>150 kg</strong> (40 × 30 cm).</figcaption>';
     var g = el('div', 'bot-gal');
     PRODS.forEach(function (p) {
-      g.innerHTML += '<a href="assets/img/balanza-' + p.id + '.jpg" target="_blank" rel="noopener"><img src="assets/img/balanza-' + p.id + '.jpg" alt="' + p.name + '" loading="lazy"><span>' + p.id + ' kg</span></a>';
+      g.innerHTML += '<a href="assets/img/balanza-' + p.id + '.jpg" target="_blank" rel="noopener"><img src="assets/img/balanza-' + p.id + '.webp" alt="Foto real de la ' + p.name.toLowerCase() + '" loading="lazy"><span>' + p.id + ' kg</span></a>';
     });
     bot('Acá las tenés juntas, son fotos reales nuestras:');
     bot(fig, true);
     bot(g, true);
-    bot('Tocá cualquier foto para verla grande. Si querés, Nicolás te manda un video del stock con la hora del momento.').then(function () {
+    bot('Tocá cualquier foto para verla grande. Si querés, Nicolás te manda un video del stock con la hora del día.').then(function () {
         comparing = false;
         actions(lastActions);
       });
@@ -106,17 +118,17 @@
     var calcBtn = el('button', 'btn', 'Calcular total'); calcBtn.type = 'button';
     function refresh() {
       var t = totals();
-      live.innerHTML = t.items.length ? 'Contado <strong>' + fmt(t.ef) + '</strong> · Transferencia <strong>' + fmt(t.tr) + '</strong>' : 'Sumá al menos una balanza.';
+      live.innerHTML = t.items.length ? 'En efectivo <strong>' + fmt(t.ef) + '</strong> · Por transferencia <strong>' + fmt(t.tr) + '</strong>' : 'Sumá al menos una balanza.';
       calcBtn.disabled = !t.items.length;
       calcBtn.style.opacity = t.items.length ? '' : '.5';
     }
     PRODS.forEach(function (p) {
       var row = el('div', 'pick-row');
-      row.appendChild(el('div', '', '<b>' + p.name + '</b><small>Base ' + p.plat + '<br>' + fmt(p.ef) + ' contado · ' + fmt(p.tr) + ' transf.</small>'));
+      row.appendChild(el('div', '', '<b>' + p.id + ' kg</b><small>Plataforma de ' + p.plat + '<br>' + fmt(p.ef) + ' en efectivo · ' + fmt(p.tr) + ' por transferencia</small>'));
       var q = el('div', 'qty');
-      var minus = el('button', '', '−'); minus.type = 'button'; minus.setAttribute('aria-label', 'Quitar una ' + p.name);
-      var out = el('output'); out.setAttribute('aria-label', 'Cantidad ' + p.name);
-      var plus = el('button', '', '+'); plus.type = 'button'; plus.setAttribute('aria-label', 'Sumar una ' + p.name);
+      var minus = el('button', '', '−'); minus.type = 'button'; minus.setAttribute('aria-label', 'Quitar una balanza de ' + p.id + ' kg');
+      var out = el('output'); out.setAttribute('aria-label', 'Cantidad de balanzas de ' + p.id + ' kg');
+      var plus = el('button', '', '+'); plus.type = 'button'; plus.setAttribute('aria-label', 'Sumar una balanza de ' + p.id + ' kg');
       function upd() { out.textContent = st.qty[p.id]; minus.disabled = st.qty[p.id] === 0; refresh(); }
       minus.addEventListener('click', function () { st.qty[p.id] = Math.max(0, st.qty[p.id] - 1); upd(); });
       plus.addEventListener('click', function () { st.qty[p.id] = Math.min(50, st.qty[p.id] + 1); upd(); });
@@ -145,7 +157,7 @@
     if (st.phase === 'after') {
       st.phase = 'intro';
       actions([]);
-      me('Sumame una báscula de ' + p.id + ' kg');
+      me('Sumame una balanza de ' + p.id + ' kg');
       picker();
     }
     // en 'intro' el selector todavía no apareció: va a salir con la cantidad ya sumada
@@ -155,9 +167,9 @@
   function calc() {
     var t = totals();
     actions([]);
-    me(t.items.map(function (i) { return i.qty + '× ' + i.name.replace('Báscula ', ''); }).join(', '));
+    me(t.items.map(function (i) { return i.qty + ' × ' + i.name.replace('Balanza de plataforma ', ''); }).join(', '));
     var lines = t.items.map(function (i) {
-      return '<div><span>' + i.qty + '× ' + i.name + '</span><span>' + fmt(i.ef) + '</span></div>';
+      return '<div><span>' + i.qty + ' × ' + i.name.replace('Balanza de plataforma', 'Balanza') + '</span><span>' + fmt(i.ef) + '</span></div>';
     }).join('');
     var html = '<div class="sum"><div class="sum-lines">' + lines + '</div>' +
       'En efectivo: <strong>' + fmt(t.ef) + '</strong><br>' +
@@ -181,21 +193,21 @@
     actions([]);
     me(ENTREGAS[tipo]);
     var txt = {
-      retiro: 'Perfecto, retirás en <strong>Acoyte 236, Caballito</strong>. <strong>No cobramos nada por adelantado</strong>: pagás todo en el momento, después de probar las balanzas.',
-      caba: 'Hacemos envíos <strong>en el día</strong> en CABA y alrededores. <strong>No cobramos nada por adelantado</strong>: pagás al recibir, después de probarla.',
-      interior: 'Al interior despachamos por <strong>Vía Cargo</strong>: como atendemos retiros en el local, no podemos viajar lejos. Para el envío te conecto con <strong>Nicolás</strong>, que te cotiza el flete. Generalmente se le abona directo a Vía Cargo.'
+      retiro: 'Perfecto, retirás en <strong>Acoyte 236, Caballito</strong> (visita coordinada por WhatsApp). <strong>No pagás nada por adelantado</strong>: pagás en el momento, después de probar la balanza.',
+      caba: 'Hacemos entregas <strong>en el día</strong> en CABA y alrededores. <strong>No pagás nada por adelantado</strong>: pagás la balanza y el envío al recibirla, después de probarla.',
+      interior: 'Al interior despachamos por <strong>Vía Cargo</strong>. En este caso <strong>la balanza se paga antes del despacho</strong> y el flete lo pagás directo a Vía Cargo. Nicolás te cotiza el envío.'
     }[tipo];
     var ask = tipo === 'interior'
-      ? 'Para que te quedes tranquilo, Nico te muestra un <strong>video del stock con la hora del momento</strong> y <strong>comprobantes de despachos por Vía Cargo</strong>. Después cierran todo con él. ¿Te conecto?'
-      : '¿La reservamos? Te conecto con <strong>Nicolás</strong> para confirmar: te manda un <strong>video del stock con la hora del momento</strong>, donde se ven las balanzas, y cerrás todo con él.';
-    var yes = tipo === 'interior' ? 'Sí, conectame con Nico' : 'Sí, quiero reservar';
+      ? 'Antes de pagar, Nicolás te manda un <strong>video del stock con la hora del día</strong> y <strong>comprobantes de despachos por Vía Cargo</strong>. ¿Te conecto con él?'
+      : '¿La reservamos? Te conecto con <strong>Nicolás</strong> para confirmar: te manda un <strong>video del stock con la hora del día</strong>, donde se ve tu balanza, y cerrás todo con él.';
+    var yes = tipo === 'interior' ? 'Sí, conectame con Nicolás' : 'Sí, quiero reservar';
     bot(txt);
     bot(ask).then(function () {
         actions([
           chip(yes, function () { datos(yes); }),
           chip('Solo quería saber el precio', function () {
             actions([]); me('Solo quería saber el precio');
-            bot('Dale, sin problema. Cuando quieras reservar, volvé a tocar <strong>Reservar Balanza YA</strong> o escribinos.').then(function () {
+            bot('Sin problema. Cuando quieras reservar, tocá <strong>Reservar</strong> en cualquier modelo o escribinos por WhatsApp.').then(function () {
               actions([chip('Ahora sí, reservar', function () { datos('Ahora sí, reservar'); })]);
             });
           })
@@ -208,7 +220,7 @@
     var interior = st.entrega === 'interior';
     actions([]);
     me(typeof label === 'string' ? label : 'Sí, quiero reservar');
-    bot('Genial. ¿Cómo te llamás?' + (interior ? ' Contame también a qué localidad va, así Nico te cotiza el envío.' : '') + ' Si me dejás tu WhatsApp, te escribimos nosotros por si el mensaje no llega.').then(function () {
+    bot('Perfecto. ¿Cómo te llamás?' + (interior ? ' Contame también a qué localidad va, así Nicolás te cotiza el envío.' : '') + ' Si me dejás tu WhatsApp, te escribimos nosotros por si el mensaje no llega.').then(function () {
       var f = el('form', 'bot-form');
       f.innerHTML =
         '<label>Nombre<input name="nombre" autocomplete="name" required maxlength="60" placeholder="Tu nombre"></label>' +
@@ -233,9 +245,9 @@
   // ---- 5. conectar por WhatsApp (+ mail de respaldo)
   function waText() {
     var t = totals();
-    var m = 'Hola Nicolás! Vengo del asistente de la web. Pedido #' + st.id + '\n\n';
-    t.items.forEach(function (i) { m += i.qty + 'x ' + i.name + ' (' + i.plat + ')\n'; });
-    m += '\nTotal contado: ' + fmt(t.ef) + '\nTotal transferencia: ' + fmt(t.tr) + '\n';
+    var m = 'Hola, Nicolás. Vengo de la web de Balanzas Caballito (asistente de pedidos). Pedido #' + st.id + '\n\n';
+    t.items.forEach(function (i) { m += i.qty + ' × ' + i.name + ' (' + i.plat + ')\n'; });
+    m += '\nTotal en efectivo: ' + fmt(t.ef) + '\nTotal por transferencia: ' + fmt(t.tr) + '\n';
     m += 'Entrega: ' + ENTREGAS[st.entrega] + '\n';
     if (st.localidad) m += 'Localidad: ' + st.localidad + '\n';
     m += 'Nombre: ' + st.nombre + '\n';
@@ -255,11 +267,12 @@
       a.target = '_blank'; a.rel = 'noopener';
       a.addEventListener('click', function () {
         checkpoint('whatsapp');
+        track('whatsapp_click', { section: origin });
         setTimeout(function () {
-          var extra = st.mailOk && st.tel ? ' Si WhatsApp no se abrió, tranqui: tu pedido ya nos llegó y te escribimos nosotros al ' + esc(st.tel) + '.' : '';
+          var extra = st.mailOk && st.tel ? ' Si WhatsApp no se abrió, no pasa nada: tu pedido ya nos llegó y te escribimos nosotros al ' + esc(st.tel) + '.' : '';
           var fin = st.entrega === 'interior'
-            ? 'Ya está. Nico te responde con el <strong>video del stock con la hora del momento</strong>, los <strong>comprobantes de despacho</strong> y la cotización del envío por Vía Cargo.'
-            : 'Ya está. Nicolás te responde con el <strong>video del stock con la hora del momento</strong> y cierran la reserva. Recordá: <strong>no se cobra nada por adelantado</strong>.';
+            ? 'Listo. Nicolás te responde con el <strong>video del stock con la hora del día</strong>, los <strong>comprobantes de despacho</strong> y la cotización del envío por Vía Cargo.'
+            : 'Listo. Nicolás te responde con el <strong>video del stock con la hora del día</strong> y cierran la reserva. Recordá: <strong>no pagás nada por adelantado</strong>.';
           bot(fin + extra).then(function () {
             actions([a, chip('Armar otro pedido', reiniciar)]);
           });
@@ -278,13 +291,14 @@
   function start(pre) {
     st.phase = 'intro';
     if (pre && st.qty[pre] !== undefined) st.qty[pre] = Math.max(1, st.qty[pre]);
-    bot('¡Hola! Soy el asistente de <strong>Balanzas Caballito</strong>.');
-    bot('Elegí los modelos y las cantidades que quieras, una sola o varias. Te calculo el total al toque.');
+    bot('Hola. Soy el asistente de pedidos de <strong>Balanzas Caballito</strong>.');
+    bot('Elegí los modelos y las cantidades, una sola balanza o varias, y te calculo el total.');
     picker();
   }
 
   function open(pre, from) {
     opener = from || document.activeElement;
+    if (from && from.getAttribute && from.getAttribute('data-origin')) origin = from.getAttribute('data-origin');
     panel.hidden = false;
     document.documentElement.classList.add('bot-open');
     if (st.phase === 'off') start(pre);
