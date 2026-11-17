@@ -8,7 +8,8 @@ window.BC_DATOS = {
   whatsapp: '5491140591621',
   whatsappVisible: '11 4059-1621',
   direccion: 'Acoyte 236, Caballito, CABA',
-  horario: 'Lunes a sábado de 9 a 18',
+  horario: 'Lunes a sábado de 10 a 22 (retiros solo con cita confirmada)',
+  mail: 'tecnofanelectronic@gmail.com',
   garantia: '60 días con uso correcto + atención postventa siempre',
   bateria: '12 a 16 h; también funciona conectada a 220 V',
   productos: [
